@@ -1,0 +1,13 @@
+.columna{
+    width: 300px;
+}
+.columna h2{
+    margin-inline-start: 2rem;
+}
+.icono{
+    margin-left: auto;
+    padding: 0 1rem
+}
+.footer-columna{
+    margin-inline-start: 2rem;
+}
