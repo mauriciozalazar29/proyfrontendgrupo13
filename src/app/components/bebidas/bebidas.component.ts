@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductoService } from '../../services/producto.service';
 import { Producto } from '../../models/producto.model';
 import { FormsModule, NgForm, NgModel } from '@angular/forms';
@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './bebidas.component.html',
   styleUrl: './bebidas.component.css',
 })
-export class BebidasComponent {
+export class BebidasComponent implements OnInit{
 
   constructor(private listaProductos: ProductoService) { }
 

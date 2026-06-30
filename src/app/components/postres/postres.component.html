@@ -1,1 +1,19 @@
-<p>postres works!</p>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 d-flex" *ngFor="let ps of postres">
+            <div class="platos-container mb-3">
+                <div class="card bg-dark text-white" style="width: 18rem;">
+                    <img [src]="ps.imagen" class="card-img-top" alt="..." style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ps.nombre}}</h5>
+                        <p class="card-text text">{{ps.categoria}}</p>
+                        <h6 class="card-text text">{{ps.precio | currency}}</h6>
+                        <button class="btn btn-outline-light mt-2">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

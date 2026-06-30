@@ -87,4 +87,43 @@ export class ProductoService {
     return this.bebidas;
   }
 
+// Objetos estáticos de prueba para el componente postres
+  private postres: Producto[] = [
+    {
+      idProducto: 9,
+      nombre: 'Volcán de Chocolate',
+      precio: 4500,
+      imagen: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=500&auto=format&fit=crop',
+      categoria: 'Postres Calientes',
+      stock: 8,
+    },
+    {
+      idProducto: 10,
+      nombre: 'Tiramisú Italiano',
+      precio: 4200,
+      imagen: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=500&auto=format&fit=crop',
+      categoria: 'Tortas',
+      stock: 12,
+    },
+    {
+      idProducto: 11,
+      nombre: 'Cheesecake de Frutos Rojos',
+      precio: 4100,
+      imagen: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?q=80&w=500&auto=format&fit=crop',
+      categoria: 'Tortas',
+      stock: 10,
+    },
+    {
+      idProducto: 12,
+      nombre: 'Cono de Helado',
+      precio: 3800,
+      imagen: 'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?q=80&w=500&auto=format&fit=crop',
+      categoria: 'Helados',
+      stock: 20,
+    }
+  ];
+
+  obtenerPostres() {
+    return this.postres;
+  }
 }
