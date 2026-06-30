@@ -43,4 +43,48 @@ export class ProductoService {
   obtenerProductos() {
     return this.productos;
   }
+
+  //Se crean bjetos estaticos de prueba para el componente bebidas
+
+  private bebidas: Producto[] = [
+
+    {
+      idProducto: 5,
+      nombre: 'Gaseosa Coca-Cola lata',
+      precio: 1800,
+      imagen: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=500&auto=format&fit=crop',
+      categoria: 'Gaseosas',
+      stock: 40,
+    },
+    {
+      idProducto: 6,
+      nombre: 'Cerveza Artesanal',
+      precio: 3500,
+      imagen: 'https://images.unsplash.com/photo-1532634922-8fe0b757fb13?q=80&w=500&auto=format&fit=crop',
+      categoria: 'Cervezas',
+      stock: 24,
+    },
+    {
+      idProducto: 7,
+      nombre: 'Fernet Branca con Coca',
+      precio: 4500,
+      imagen: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=500&auto=format&fit=crop',
+      categoria: 'Tragos',
+      stock: 15,
+    },
+    {
+      idProducto: 8,
+      nombre: 'Agua Mineral Sin Gas',
+      precio: 1500,
+      imagen: 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?q=80&w=500&auto=format&fit=crop',
+      categoria: 'Aguas',
+      stock: 50,
+    }
+
+  ]
+
+  obtenerBebidas(){
+    return this.bebidas;
+  }
+
 }
