@@ -23,7 +23,7 @@ export class MesaComponent implements OnInit {
   esAdmin: boolean = true;
 
   constructor(
-    private mesaService: MesaService, 
+    private mesaService: MesaService,
     private cdr: ChangeDetectorRef,
     private router: Router,
     private carritoService: CarritoService
@@ -32,13 +32,11 @@ export class MesaComponent implements OnInit {
   ngOnInit(): void {
     this.cargarMesas();
   }
-
-  // --- NUEVA FUNCIÓN PARA IR A TOMAR EL PEDIDO ---
   atenderMesa(idMesa: number, numMesa: number): void {
-    // 1. Guardamos la mesa seleccionada en el estado global (Carrito)
+    // guardamos la mesa seleccionada en el estado global (Carrito)
     this.carritoService.setMesa(idMesa, numMesa);
-    
-    // 2. Navegamos al layout de pedidos (que por defecto carga /platos)
+
+    // navegamos al layout de pedidos (defecto platos)
     this.router.navigate(['/platos']);
   }
 
@@ -78,6 +76,15 @@ export class MesaComponent implements OnInit {
       next: () => this.cargarMesas(),
       error: (err) => alert(err.error?.message || "Error al cambiar estado")
     });
+  }
+
+  liberarMesa(idMesa: number): void {
+    if (confirm("¿Confirmás que el cliente ya pagó y se retiró? La mesa quedará LIBRE.")) {
+      this.mesaService.liberarMesa(idMesa).subscribe({
+        next: () => this.cargarMesas(),
+        error: (err) => alert(err.error?.message || "Error al liberar la mesa")
+      });
+    }
   }
 
   eliminarMesa(idMesa: number): void {

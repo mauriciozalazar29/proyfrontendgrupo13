@@ -38,15 +38,19 @@
           <button class="btn btn-warning btn-sm fw-bold w-100 mb-1" (click)="atenderMesa(mesa.idMesa, mesa.numMesa)">
             <i class="fas fa-utensils"></i> Tomar Pedido
           </button>
+          } @else {
+          <button class="btn btn-danger btn-sm fw-bold w-100 mb-1" (click)="liberarMesa(mesa.idMesa)">
+            <i class="fas fa-sign-out-alt"></i> Liberar Mesa
+          </button>
           }
 
           <button class="btn btn-light btn-sm fw-bold flex-grow-1" (click)="cambiarEstado(mesa.idMesa, mesa.estado)">
-            Cambiar
+            <i class="fas fa-sync-alt"></i> {{ mesa.estado === 'LIBRE' ? 'Ocupar' : 'Liberar' }}
           </button>
 
           @if (esAdmin) {
-          <button class="btn btn-dark btn-sm fw-bold flex-grow-1" (click)="eliminarMesa(mesa.idMesa)">
-            Eliminar
+          <button class="btn btn-outline-danger btn-sm" (click)="eliminarMesa(mesa.idMesa)">
+            <i class="fas fa-trash"></i>
           </button>
           }
         </div>
