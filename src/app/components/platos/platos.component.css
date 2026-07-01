@@ -1,21 +1,27 @@
-.card{
- border-radius: 50px;
- margin: 10px;
- box-shadow: 0 4px 15px 0 black
+.card {
+    border-radius: 50px;
+    margin: 10px;
+    box-shadow: 0 4px 15px 0 black
 }
-.card-img-top{
- border-radius: 50px;
- object-fit: cover;
+
+.card-img-top {
+    height: 200px;
+    border-radius: 30px;
+    object-fit: cover;
 }
-h5{
+
+h5 {
     color: white;
 }
+
 h6 {
     color: white;
 }
-p{
+
+p {
     color: white;
 }
-button{
+
+button {
     margin-left: 200px;
 }

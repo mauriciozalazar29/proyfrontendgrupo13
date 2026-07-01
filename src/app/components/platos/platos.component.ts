@@ -22,7 +22,7 @@ export class PlatosComponent implements OnInit {
   ) { }
   
   ngOnInit() {
-    this.listaProductos.obtenerProductos().subscribe({
+    this.listaProductos.obtenerProductos('plato_principal').subscribe({
       next: (data) => {
         this.productos = data;
         this.cdr.detectChanges();

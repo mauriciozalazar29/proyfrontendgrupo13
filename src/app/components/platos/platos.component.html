@@ -1,19 +1,21 @@
+<!-- cards -->
 <div class="container py-5">
-  <div class="row">
-    <div class="col-12 col-md-6 col-lg-4 d-flex" *ngFor="let p of productos">
-      <div class="platos-container mb-3">
-        <div class="card bg-dark" style="width: 18rem;">
-          <img [src]="p.imagen" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{p.nombre}}</h5>
-            <p class="card-text">{{p.categoria}}</p>
-            <h6 class="card-text">{{p.precio | currency}}</h6>
-            <button class="btn btn-outline-light" (click)="agregarAlCarrito(p)">
-              <span class="material-symbols-outlined">add</span>
-            </button>
-          </div>
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 d-flex" *ngFor="let p of productos">
+            <div class="card bg-dark w-100">
+                <img [src]="p.imagen" class="card-img-top" alt="...">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{p.nombre}}</h5>
+                    <p class="card-text">{{p.categoria}}</p>
+                    <div class="d-flex justify-content-between align-items-center ms-auto">
+                        <h6 class="card-text">{{p.precio | currency}}</h6>
+                        <button (click)="agregarAlCarrito(p)" 
+                            class="btn btn-outline-light rounded-pill d-flex align-items-center justify-content-center">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>

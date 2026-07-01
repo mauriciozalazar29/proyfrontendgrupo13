@@ -1,3 +1,24 @@
 <header class="p-3 bg-dark text-white d-flex align-items-center">
+    <button class="btn btn-dark" 
+    type="button"
+    data-bs-toggle="offcanvas" 
+    data-bs-target="#sidebar" 
+    aria-controls="sidebar">
+        <span class="material-symbols-outlined">menu</span>
+    </button>
     <h1 class="fs-4 fw-bold">RestoYa</h1>
+    <div class="ms-auto d-flex align-items-center gap-2">
+        <!-- carrito  -->
+            <button class="btn btn-dark material-symbols-outlined"
+                type="button" 
+                data-bs-toggle="offcanvas" 
+                data-bs-target="#pedidos"
+                aria-controls="pedidos">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            </button>
+            <!-- login -->
+            <button class="btn btn-outline-light">
+                Iniciar Sesión
+            </button>
+    </div>
 </header>
