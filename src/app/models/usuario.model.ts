@@ -1,5 +1,5 @@
 export interface Usuario {
-    idUsuario: number;
+    //idUsuario: number; el id usuario se incrementaria de forma automatica
     nombre: string;
     apellido: string;
     email: string;
