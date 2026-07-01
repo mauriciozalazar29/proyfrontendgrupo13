@@ -1,0 +1,72 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="text-center mb-4">
+        <h2>Control de Caja</h2>
+        <p class="text-muted">Gestión de turnos y recaudación</p>
+      </div>
+
+      <!-- tarjeta caja cerrada -->
+      @if (!cajaActiva) {
+      <div class="card shadow border-danger">
+        <div class="card-header bg-danger text-white fw-bold">
+          Caja Cerrada
+        </div>
+        <div class="card-body text-center p-5">
+          <h5 class="mb-4">No hay ningún turno activo.</h5>
+
+          @if (esAdminOCajero) {
+          <div class="input-group mb-3 w-75 mx-auto">
+            <span class="input-group-text">$</span>
+            <input type="number" class="form-control form-control-lg" placeholder="Monto Inicial"
+              [(ngModel)]="montoInicial">
+          </div>
+          <button class="btn btn-success btn-lg px-5" (click)="abrirCaja()">
+            <i class="fas fa-lock-open"></i> Abrir Caja
+          </button>
+          } @else {
+          <p class="text-danger">Solo un cajero o administrador puede abrir la caja.</p>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- tarjeta caja abierta -->
+      @else {
+      <div class="card shadow border-success">
+        <div class="card-header bg-success text-white fw-bold d-flex justify-content-between align-items-center">
+          <span>Caja Abierta</span>
+          <span class="badge bg-light text-success">ID: {{ cajaActiva.idCaja }}</span>
+        </div>
+        <div class="card-body p-4">
+
+          <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Monto Inicial:
+              <strong>${{ cajaActiva.montoInicial }}</strong>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Fecha de Apertura:
+              <strong>{{ cajaActiva.fechaApertura | date:'short' }}</strong>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center text-primary">
+              Pagos Registrados:
+              <strong>{{ cajaActiva.pagos?.length || 0 }}</strong>
+            </li>
+          </ul>
+
+          @if (esAdminOCajero) {
+          <div class="d-grid gap-2">
+            <button class="btn btn-danger btn-lg" (click)="cerrarCaja()">
+              <i class="fas fa-lock"></i> Cerrar Turno
+            </button>
+          </div>
+          }
+        </div>
+      </div>
+      }
+
+    </div>
+  </div>
+</div>

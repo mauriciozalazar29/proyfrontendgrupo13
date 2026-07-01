@@ -1,1 +1,61 @@
-<p>mesa works!</p>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Gestión de Mesas</h2>
+
+    <!-- panel ADMIN -->
+    @if (esAdmin) {
+    <div class="card p-3 shadow-sm">
+      <h5 class="card-title">Nueva Mesa (Admin)</h5>
+      <div class="d-flex gap-2">
+        <input type="number" placeholder="Nº Mesa" [(ngModel)]="nuevaMesa.numMesa" class="form-control"
+          style="width: 100px;">
+        <input type="number" placeholder="Capacidad" [(ngModel)]="nuevaMesa.capacidad" class="form-control"
+          style="width: 120px;">
+        <button class="btn btn-primary" (click)="crearMesa()">Agregar</button>
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="row g-4">
+    @for (mesa of mesas; track mesa.idMesa) {
+    <div class="col-md-4 col-lg-3">
+      <div class="card text-white h-100"
+        [ngClass]="{'bg-success': mesa.estado === 'LIBRE', 'bg-danger': mesa.estado === 'OCUPADA'}">
+
+        <div class="card-header fw-bold text-center fs-5">
+          Mesa {{ mesa.numMesa }}
+        </div>
+
+        <div class="card-body text-center">
+          <h6 class="card-title mb-3">Capacidad: {{ mesa.capacidad }} personas</h6>
+          <span class="badge bg-light text-dark mb-3 px-3 py-2 fs-6">{{ mesa.estado }}</span>
+        </div>
+
+        <div class="card-footer d-flex flex-wrap justify-content-center gap-2 mt-2">
+          <!-- Botón para ir a tomar el pedido  -->
+          @if (mesa.estado === 'LIBRE') {
+          <button class="btn btn-warning btn-sm fw-bold w-100 mb-1" (click)="atenderMesa(mesa.idMesa, mesa.numMesa)">
+            <i class="fas fa-utensils"></i> Tomar Pedido
+          </button>
+          }
+
+          <button class="btn btn-light btn-sm fw-bold flex-grow-1" (click)="cambiarEstado(mesa.idMesa, mesa.estado)">
+            Cambiar
+          </button>
+
+          @if (esAdmin) {
+          <button class="btn btn-dark btn-sm fw-bold flex-grow-1" (click)="eliminarMesa(mesa.idMesa)">
+            Eliminar
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+    } @empty {
+    <div class="col-12">
+      <div class="alert alert-warning text-center">No se encontraron mesas.</div>
+    </div>
+    }
+  </div>
+</div>

@@ -1,24 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ProductoService } from '../../services/producto.service';
 import { Producto } from '../../models/producto.model';
-import { FormsModule, NgForm, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { CarritoService } from '../../services/carrito.service';
 
 @Component({
   selector: 'app-bebidas',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './bebidas.component.html',
-  styleUrl: './bebidas.component.css',
+  styleUrl: './bebidas.component.css'
 })
 export class BebidasComponent implements OnInit{
 
-  constructor(private listaProductos: ProductoService) { }
-
   bebidas: Producto[] = [];
 
+  constructor(
+    private listaProductos: ProductoService,
+    private carritoService: CarritoService,
+    private cdr: ChangeDetectorRef
+  ) { }
+
   ngOnInit() {
-    // obtener las bebidas de la lista apenas cargue la pagina
-    this.bebidas = this.listaProductos.obtenerBebidas();
+    this.listaProductos.obtenerBebidas().subscribe({
+      next: (data) => {
+        this.bebidas = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error("Error cargando bebidas", err)
+    });
   }
-  
+
+  agregarAlCarrito(producto: Producto) {
+    this.carritoService.agregarProducto(producto);
+  }
 }

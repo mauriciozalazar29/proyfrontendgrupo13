@@ -1,21 +1,42 @@
-<!-- router outlet para visualizar las secciones hijas de layout-pedido -->
 <div class="d-flex flex-row overflow-auto min-vh-100">
-    <div class="d-flex flex-column flex-grow-1">
-        <router-outlet></router-outlet>
+  <div class="d-flex flex-column flex-grow-1">
+    <router-outlet></router-outlet>
+  </div>
+
+  <div class="columna d-flex flex-column flex-grow-0 bg-black bg-opacity-25" style="width: 300px; padding: 20px;">
+    <div class="header-columna d-flex mt-5 justify-content-between align-items-center">
+      <h2 class="fs-4 fw-bold mb-0">Mesa Nº {{ mesaActiva?.numMesa || '?' }}</h2>
+      <span class="icono material-symbols-outlined fs-2">shopping_cart</span>
     </div>
-    <!-- segunda columna para pedidos -->
-    <div class="columna d-flex flex-column flex-grow-0 bg-black bg-opacity-25">
-        <div class="header-columna d-flex mt-5">
-            <h2 class="fs-4 fw-bold">Mesa Nº </h2>
-            <span class="icono material-symbols-outlined">shopping_cart</span>
-        </div>
-        <div class="body-container flex-grow-1 d-flex justify-content-center align-items-center text-center">
-            <h6>Toca un producto para agregarlo</h6>
-        </div>
-        <div class="footer-columna d-flex mt-auto py-5">
-            <h5>Total: 0$</h5>
-            <button class="btn btn-light mt-5">Confirmar pedido</button>
-        </div>
+
+    <div class="body-container flex-grow-1 d-flex flex-column mt-4 overflow-auto">
+      @if (items.length === 0) {
+      <div class="h-100 d-flex justify-content-center align-items-center text-center text-muted">
+        <h6>Toca un producto para agregarlo</h6>
+      </div>
+      } @else {
+      <ul class="list-group list-group-flush bg-transparent">
+        @for (item of items; track item.idProducto) {
+        <li
+          class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center">
+          <div>
+            <span class="fw-bold">{{ item.cantidad }}x</span> {{ item.nombre }}
+          </div>
+          <span>${{ item.precio * item.cantidad }}</span>
+        </li>
+        }
+      </ul>
+      }
     </div>
+
+    <div class="footer-columna d-flex flex-column mt-auto py-4 border-top border-secondary">
+      <h4 class="d-flex justify-content-between">
+        <span>Total:</span>
+        <span class="text-success fw-bold">${{ total }}</span>
+      </h4>
+      <button class="btn btn-warning mt-4 fw-bold fs-5 w-100 shadow-sm" (click)="confirmarPedido()">
+        Confirmar pedido
+      </button>
+    </div>
+  </div>
 </div>
-<!-- ===================== -->

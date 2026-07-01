@@ -1,0 +1,28 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CajaService {
+  private apiUrl = 'http://localhost:3000/api/caja';
+
+  constructor(private http: HttpClient) { }
+
+  abrirCaja(montoInicial: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/abrir`, { montoInicial });
+  }
+
+  obtenerCajaActiva(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/activa`);
+  }
+
+  obtenerHistorial(): Observable<any> {
+    return this.http.get(this.apiUrl);
+  }
+
+  cerrarCaja(): Observable<any> {
+    return this.http.put(`${this.apiUrl}/cerrar`, {});
+  }
+}

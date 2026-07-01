@@ -8,7 +8,7 @@
                         <h5 class="card-title fw-bold">{{ps.nombre}}</h5>
                         <p class="card-text text">{{ps.categoria}}</p>
                         <h6 class="card-text text">{{ps.precio | currency}}</h6>
-                        <button class="btn btn-outline-light mt-2">
+                        <button class="btn btn-outline-light mt-2" (click)="agregarAlCarrito(ps)">
                             <span class="material-symbols-outlined">add</span>
                         </button>
                     </div>
