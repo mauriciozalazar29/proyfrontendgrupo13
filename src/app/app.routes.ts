@@ -3,6 +3,7 @@ import { HomeComponent } from './components/home/home.component';
 import {BebidasComponent} from './components/bebidas/bebidas.component';
 import {FavoritosComponent} from './components/favoritos/favoritos.component';
 import {MesaComponent} from './components/mesa/mesa.component';
+import {CajaComponent} from './components/caja/caja.component';
 import {PlatosComponent} from './components/platos/platos.component';
 import {PostresComponent} from './components/postres/postres.component';
 import {LayoutPedidoComponent} from './components/layout-pedido/layout-pedido.component';
@@ -12,6 +13,7 @@ export const routes: Routes = [
     {path: 'favoritos', component: FavoritosComponent},
     {path: 'home', component: HomeComponent},
     {path: 'mesa', component: MesaComponent},
+    {path: 'caja', component: CajaComponent},
     {path: '', component: LayoutPedidoComponent,
     children: [   // bebidas, platos, postres usaran el layout de pedido
         {path: 'bebidas', component: BebidasComponent},

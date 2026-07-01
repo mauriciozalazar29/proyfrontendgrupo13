@@ -1,0 +1,70 @@
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CajaService } from '../../services/caja.service';
+
+@Component({
+  selector: 'app-caja',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './caja.component.html',
+  styleUrl: './caja.component.css'
+})
+export class CajaComponent implements OnInit {
+  cajaActiva: any = null;
+  montoInicial: number = 0;
+
+  // variable para ROL 
+  esAdminOCajero: boolean = true;
+
+  constructor(private cajaService: CajaService, private cdr: ChangeDetectorRef) { }
+
+  ngOnInit(): void {
+    this.verificarCaja();
+  }
+
+  verificarCaja(): void {
+    this.cajaService.obtenerCajaActiva().subscribe({
+      next: (data) => {
+        this.cajaActiva = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        // si tira 404 significa que no hay caja abierta
+        if (err.status === 404) {
+          this.cajaActiva = null;
+          this.cdr.detectChanges();
+        } else {
+          console.error("Error al obtener caja:", err);
+        }
+      }
+    });
+  }
+
+  abrirCaja(): void {
+    if (this.montoInicial < 0) {
+      alert("El monto no puede ser negativo");
+      return;
+    }
+
+    this.cajaService.abrirCaja(this.montoInicial).subscribe({
+      next: () => {
+        alert("¡Caja abierta exitosamente!");
+        this.verificarCaja();
+      },
+      error: (err) => alert(err.error?.message || "Error al abrir la caja")
+    });
+  }
+
+  cerrarCaja(): void {
+    if (confirm("¿Estas seguro que queres cerrar la caja del turno?")) {
+      this.cajaService.cerrarCaja().subscribe({
+        next: (res) => {
+          alert(`Caja cerrada. Monto final: $${res.caja.montoFinal}`);
+          this.verificarCaja();
+        },
+        error: (err) => alert(err.error?.message || "Error al cerrar la caja")
+      });
+    }
+  }
+}
