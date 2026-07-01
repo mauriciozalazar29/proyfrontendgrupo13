@@ -1,76 +1,19 @@
-<!-- cards -->
 <div class="container py-5">
-    <div class="row">
-        <div class="col-12 col-md-6 col-lg-4 d-flex" *ngFor="let p of productos">
-            <div class="platos-container mb-3">
-                <div class="card bg-dark" style="width: 18rem;">
-                    <img [src]="p.imagen" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">{{p.nombre}}</h5>
-                        <p class="card-text">{{p.categoria}}</p>
-                        <h6 class="card-text">{{p.precio | currency}}</h6>
-                        <button class="btn btn-outline-light">
-                            <span class="material-symbols-outlined">add</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4 d-flex" *ngFor="let p of productos">
+      <div class="platos-container mb-3">
+        <div class="card bg-dark" style="width: 18rem;">
+          <img [src]="p.imagen" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{p.nombre}}</h5>
+            <p class="card-text">{{p.categoria}}</p>
+            <h6 class="card-text">{{p.precio | currency}}</h6>
+            <button class="btn btn-outline-light" (click)="agregarAlCarrito(p)">
+              <span class="material-symbols-outlined">add</span>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-<!-- <span class="material-symbols-outlined">icecream</span> -->
-<!-- modal -->
-<!-- <div class="modal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div> -->
-<!-- tabla -->
-<!-- <table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row"></th>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>>
-    </tbody>
-</table> -->
-
-<!-- cards -->
-<!-- <div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div> -->
-
-<!-- select -->
-<!-- <select class="form-select" aria-label="Default select example">
-  <option selected>Open this select menu</option>
-  <option value="1">One</option>
-  <option value="2">Two</option>
-  <option value="3">Three</option>
-</select> -->

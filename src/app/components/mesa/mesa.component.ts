@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MesaService } from '../../services/mesa.service';
+import { CarritoService } from '../../services/carrito.service';
 
 @Component({
   selector: 'app-mesa',
@@ -18,13 +20,26 @@ export class MesaComponent implements OnInit {
     capacidad: null
   };
 
-  // variable simulada para el ROL cambiar por un AuthGuard/AuthService
   esAdmin: boolean = true;
 
-  constructor(private mesaService: MesaService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private mesaService: MesaService, 
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private carritoService: CarritoService
+  ) { }
 
   ngOnInit(): void {
     this.cargarMesas();
+  }
+
+  // --- NUEVA FUNCIÓN PARA IR A TOMAR EL PEDIDO ---
+  atenderMesa(idMesa: number, numMesa: number): void {
+    // 1. Guardamos la mesa seleccionada en el estado global (Carrito)
+    this.carritoService.setMesa(idMesa, numMesa);
+    
+    // 2. Navegamos al layout de pedidos (que por defecto carga /platos)
+    this.router.navigate(['/platos']);
   }
 
   cargarMesas(): void {

@@ -7,6 +7,7 @@ import {CajaComponent} from './components/caja/caja.component';
 import {PlatosComponent} from './components/platos/platos.component';
 import {PostresComponent} from './components/postres/postres.component';
 import {LayoutPedidoComponent} from './components/layout-pedido/layout-pedido.component';
+import { QrComponent } from './components/qr/qr';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -14,6 +15,7 @@ export const routes: Routes = [
     {path: 'home', component: HomeComponent},
     {path: 'mesa', component: MesaComponent},
     {path: 'caja', component: CajaComponent},
+    {path: 'qr/:idMesa', component: QrComponent},
     {path: '', component: LayoutPedidoComponent,
     children: [   // bebidas, platos, postres usaran el layout de pedido
         {path: 'bebidas', component: BebidasComponent},

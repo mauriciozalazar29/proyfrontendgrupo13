@@ -7,11 +7,11 @@
                     <div class="card-body">
                         <h5 class="card-title">{{b.nombre}}</h5>
                         <p class="card-text">{{b.categoria}}</p>
-                        <h6 class="card-text">{{b.precio | currency}}
+                        <h6 class="card-text">{{b.precio | currency}}</h6>
 
-                        </h6> <button class="btn btn-outline-light">
-                            <span class="material-symbols-outlined">add</span>
-                        </button>
+                            <button class="btn btn-outline-light" (click)="agregarAlCarrito(b)">
+                                <span class="material-symbols-outlined">add</span>
+                            </button>
                     </div>
                 </div>
             </div>
