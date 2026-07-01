@@ -21,22 +21,29 @@ export class QrComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // Leemos el idMesa de la URL
-    const idMesaStr = this.route.snapshot.paramMap.get('idMesa');
+    // leemos el numero de mesa de la URL
+    const numMesaStr = this.route.snapshot.paramMap.get('idMesa');
 
-    if (idMesaStr) {
-      const idMesa = parseInt(idMesaStr, 10);
+    if (numMesaStr) {
+      const numMesaDeseada = parseInt(numMesaStr, 10);
 
-      // Buscamos la mesa en el backend para asegurarnos que exista y obtener su número
-      this.mesaService.obtenerMesaPorId(idMesa).subscribe({
-        next: (mesa) => {
-          // Guardamos la mesa en el carrito usando la función correcta
-          this.carritoService.setMesa(mesa.idMesa, mesa.numMesa);
-          // Redirigimos al cliente al menú de platos
-          this.router.navigate(['/platos']);
+      // buscamos TODAS las mesas para encontrar la que tenga ese Numero de Mesa
+      this.mesaService.getMesas().subscribe({
+        next: (mesas: any[]) => {
+          const mesaEncontrada = mesas.find(m => m.numMesa === numMesaDeseada);
+
+          if (mesaEncontrada) {
+            // guardamos la mesa en el carrito usando la funcion correcta (pasamos PK y Numero)
+            this.carritoService.setMesa(mesaEncontrada.idMesa, mesaEncontrada.numMesa);
+            // redirigimos al cliente al menu de platos
+            this.router.navigate(['/platos']);
+          } else {
+            alert('La mesa N ' + numMesaDeseada + ' no existe en el sistema.');
+            this.router.navigate(['/']);
+          }
         },
         error: (err) => {
-          alert('Mesa no encontrada o inactiva.');
+          alert('Error de conexion con el sistema.');
           this.router.navigate(['/']);
         }
       });
