@@ -4,7 +4,8 @@
  box-shadow: 0 4px 15px 0 black
 }
 .card-img-top{
- border-radius: 50px;
+height: 200px;
+ border-radius: 30px;
  object-fit: cover;
 }
 h5{

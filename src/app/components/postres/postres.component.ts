@@ -22,7 +22,7 @@ export class PostresComponent implements OnInit{
   ) { }
   
   ngOnInit() {
-    this.listaProductos.obtenerPostres().subscribe({
+    this.listaProductos.obtenerProductos('postre').subscribe({
       next: (data) => {
         this.postres = data;
         this.cdr.detectChanges();

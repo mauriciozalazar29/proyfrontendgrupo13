@@ -1,13 +1,28 @@
-.columna{
-    width: 300px;
+/* header siempre visible */
+:host{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: block;
 }
-.columna h2{
-    margin-inline-start: 2rem;
+header{
+    background-color: #1f1e1e;
 }
 .icono{
     margin-left: auto;
     padding: 0 1rem
 }
-.footer-columna{
-    margin-inline-start: 2rem;
+
+#pedidos{
+    width: 100%;
+    width: 300px;
+}
+.offcanvas-footer{
+    h5{
+        color:green;
+        text-shadow: 1px 1px 2px rgb(0, 0, 0);
+    }
+}
+.btn{
+    font-weight: 700;
 }

@@ -1,23 +1,28 @@
-<div class="sidebar d-flex flex-column align-items-center text-bg-dark mt-4">
+<div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
     <!-- items del side bar  -->
     <!-- ======================= -->
     <div class="items-container d-flex flex-column align-items-center gap-4 w-100">
+        
         <button class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
             type="button" [routerLink]="['home']" routerLinkActive="active">
             <!-- iconos usados de google -->
             <span class="material-symbols-outlined">home</span>
             <span class="text-white">Inicio</span>
-
         </button>
         <button class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
-            type="button" [routerLink]="['favoritos']" routerLinkActive="active">
-            <span class="material-symbols-outlined">star</span>
-            <span class="text-white">Favoritos</span>
+            type="button" [routerLink]="['mesa']" routerLinkActive="active">
+            <span class="material-symbols-outlined">table_bar</span>
+            <span class="text-white">Mesa</span>
         </button>
         <button class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
             type="button" [routerLink]="['platos']" routerLinkActive="active">
             <span class="material-symbols-outlined">lunch_dining</span>
             <span class="text-white">Platos</span>
+        </button>
+        <button class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
+            type="button" [routerLink]="['platos']" routerLinkActive="active">
+            <span class="material-symbols-outlined">restaurant</span>
+            <span class="text-white">Cocina</span>
         </button>
         <button class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
             type="button" [routerLink]="['bebidas']" routerLinkActive="active">

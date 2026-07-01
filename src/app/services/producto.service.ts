@@ -10,16 +10,16 @@ export class ProductoService {
 
   constructor(private http: HttpClient) { }
 
-  obtenerProductos(): Observable<any[]> {
+  obtenerProductos(categoria:string): Observable<any[]> {
 
-    return this.http.get<any[]>(`${this.apiUrl}?categoria=plato_principal`);
+    return this.http.get<any[]>(`${this.apiUrl}?categoria=${categoria}`);
   }
 
-  obtenerBebidas(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}?categoria=bebida`);
-  }
+  // obtenerBebidas(): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.apiUrl}?categoria=bebida`);
+  // }
 
-  obtenerPostres(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}?categoria=postre`);
-  }
+  // obtenerPostres(): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.apiUrl}?categoria=postre`);
+  // }
 }

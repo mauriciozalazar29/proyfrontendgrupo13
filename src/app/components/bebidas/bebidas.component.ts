@@ -23,7 +23,7 @@ export class BebidasComponent implements OnInit{
   ) { }
 
   ngOnInit() {
-    this.listaProductos.obtenerBebidas().subscribe({
+    this.listaProductos.obtenerProductos('bebida').subscribe({
       next: (data) => {
         this.bebidas = data;
         this.cdr.detectChanges();
