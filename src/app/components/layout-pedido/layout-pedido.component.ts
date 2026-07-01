@@ -4,6 +4,7 @@ import { RouterOutlet, Router } from '@angular/router';
 import { CarritoService, ItemCarrito } from '../../services/carrito.service';
 import { PedidoService } from '../../services/pedido.service';
 import { MesaService } from '../../services/mesa.service';
+import { PagoService } from '../../services/pago.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -22,6 +23,7 @@ export class LayoutPedidoComponent implements OnInit {
     private carritoService: CarritoService,
     private pedidoService: PedidoService,
     private mesaService: MesaService,
+    private pagoService: PagoService,
     private router: Router
   ) { }
 
@@ -49,12 +51,12 @@ export class LayoutPedidoComponent implements OnInit {
       return;
     }
 
-    //  Crear el Pedido Principal
+    //  crear el Pedido Principal
     this.pedidoService.crearPedido(this.mesaActiva.idMesa).subscribe({
       next: (resPedido) => {
         const idPedido = resPedido.pedido.idPedido;
 
-        //  Crear todos los Detalles del pedido a la vez
+        //  crear todos los Detalles del pedido a la vez
         const requests = this.items.map(item =>
           this.pedidoService.agregarDetalle(idPedido, item.idProducto, item.cantidad, item.precio)
         );
@@ -62,12 +64,23 @@ export class LayoutPedidoComponent implements OnInit {
         // forkJoin espera a que terminen TODAS las llamadas a los detalles
         forkJoin(requests).subscribe({
           next: () => {
-            // Pasar la mesa a "OCUPADA"
+            // pasar la mesa a "OCUPADA"
             this.mesaService.cambiarEstado(this.mesaActiva!.idMesa, 'OCUPADA').subscribe({
               next: () => {
-                alert('¡Pedido enviado a cocina y mesa ocupada con éxito!');
-                this.carritoService.limpiarCarrito();
-                this.router.navigate(['/mesa']);
+                // ahora generamos el link de MercadoPago
+                this.pagoService.crearPreferenciaPago(idPedido).subscribe({
+                  next: (resPago) => {
+                    this.carritoService.limpiarCarrito();
+                    // redirigir al cliente a MercadoPago
+                    window.location.href = resPago.init_point;
+                  },
+                  error: (err) => {
+                    const mensajeError = err.error?.message || err.message || 'Error desconocido';
+                    alert('Pedido creado, pero error al procesar pago: ' + mensajeError);
+                    this.carritoService.limpiarCarrito();
+                    this.router.navigate(['/mesa']);
+                  }
+                });
               },
               error: () => alert('Pedido creado, pero error al ocupar la mesa.')
             });

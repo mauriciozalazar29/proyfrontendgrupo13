@@ -61,6 +61,16 @@
             <button class="btn btn-danger btn-lg" (click)="cerrarCaja()">
               <i class="fas fa-lock"></i> Cerrar Turno
             </button>
+            <hr>
+            <p class="text-center text-muted mb-1">Reportes del Turno Actual</p>
+            <div class="d-flex justify-content-between gap-2">
+              <button class="btn btn-outline-danger flex-grow-1 fw-bold" (click)="descargarPDF(cajaActiva.idCaja)">
+                <i class="fas fa-file-pdf"></i> Descargar PDF
+              </button>
+              <button class="btn btn-outline-success flex-grow-1 fw-bold" (click)="descargarExcel(cajaActiva.idCaja)">
+                <i class="fas fa-file-excel"></i> Descargar Excel
+              </button>
+            </div>
           </div>
           }
         </div>
