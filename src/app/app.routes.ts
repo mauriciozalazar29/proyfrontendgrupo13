@@ -9,9 +9,18 @@ import { PostresComponent } from './components/postres/postres.component';
 import { LayoutPedidoComponent } from './components/layout-pedido/layout-pedido.component';
 import { QrComponent } from './components/qr/qr';
 
+import { Login } from './components/login/login';
+import { Usuario } from './components/usuario/usuario';
+import { UsuarioForm } from './components/usuario-form/usuario-form';
+
 export const routes: Routes = [
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'login', component: Login },
     { path: 'favoritos', component: FavoritosComponent },
+
+    { path: 'usuario', component: Usuario },
+    { path: 'usuario-form', component: UsuarioForm },
+    { path: 'usuario-form/:id', component: UsuarioForm },
 
     { path: 'qr/:idMesa', component: QrComponent },
     {

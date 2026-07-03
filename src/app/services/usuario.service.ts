@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,48 +6,27 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UsuarioService {
-  //coneccion a la api local
-  urlApi: string = "http://localhost:3000/api/usuario/";
+  urlApi: string = "http://localhost:3000/api/usuarios/";
 
   constructor(private http: HttpClient) { }
 
-  //Metodo para traer lista de Uusarios
   public getUsuarios(): Observable<any> {
-    let HttpOptions = {
-      headers: new HttpHeaders({}),
-      params: new HttpParams()
-    }
-    return this.http.get<any>(this.urlApi, HttpOptions);
+    return this.http.get<any>(this.urlApi);
   }
 
-  getGenerico(): Observable<any> {
-
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'x-rapidapi-key': '',
-        'x-rapidapi-host': '',
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.get('', httpOptions);  
-    
+  public getUsuario(id: number): Observable<any> {
+    return this.http.get<any>(this.urlApi + id);
   }
 
-  postGenerico(): Observable<any> {
-
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'x-rapidapi-key': '',
-        'x-rapidapi-host': '',
-        'Content-Type': 'application/json'
-      })
-    };
-
-    let body = {
-
-    };
-    return this.http.post('', body, httpOptions);  
-    
+  public createUsuario(usuario: any): Observable<any> {
+    return this.http.post<any>(this.urlApi, usuario);
   }
 
+  public updateUsuario(id: number, usuario: any): Observable<any> {
+    return this.http.put<any>(this.urlApi + id, usuario);
+  }
+
+  public deleteUsuario(id: number): Observable<any> {
+    return this.http.delete<any>(this.urlApi + id);
+  }
 }

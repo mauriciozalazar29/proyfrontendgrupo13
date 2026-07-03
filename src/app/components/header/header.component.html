@@ -9,16 +9,22 @@
     <h1 class="fs-4 fw-bold">RestoYa</h1>
     <div class="ms-auto d-flex align-items-center gap-2">
         <!-- carrito  -->
-            <button class="btn btn-dark material-symbols-outlined"
+            <button *ngIf="authService.estaAutenticado()" class="btn btn-dark material-symbols-outlined"
                 type="button" 
                 data-bs-toggle="offcanvas" 
                 data-bs-target="#pedidos"
                 aria-controls="pedidos">
             <span class="material-symbols-outlined">shopping_cart</span>
             </button>
-            <!-- login -->
-            <button class="btn btn-outline-light">
+            <!-- login / logout -->
+            <button class="btn btn-outline-light" *ngIf="!authService.estaAutenticado()" [routerLink]="['/login']">
                 Iniciar Sesión
             </button>
+            <div *ngIf="authService.estaAutenticado()" class="d-flex align-items-center gap-3">
+                <span class="text-white-50">Hola, {{ (authService.usuario$ | async)?.nombre }}</span>
+                <button class="btn btn-outline-danger d-flex align-items-center gap-2" (click)="logout()">
+                    <span class="material-symbols-outlined fs-6">logout</span> Salir
+                </button>
+            </div>
     </div>
 </header>

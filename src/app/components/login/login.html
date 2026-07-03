@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-dark text-white">
+  <div class="card bg-secondary text-white p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+    <div class="text-center mb-4">
+      <span class="material-symbols-outlined fs-1 text-warning mb-2">restaurant</span>
+      <h2 class="fw-bold">Ingresar</h2>
+      <p class="text-light">Sistema de Gestión</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo Electrónico</label>
+        <div class="input-group">
+          <span class="input-group-text bg-dark text-white border-0"><span class="material-symbols-outlined fs-6">mail</span></span>
+          <input type="email" class="form-control bg-dark text-white border-0" id="email" 
+                 [(ngModel)]="email" name="email" required placeholder="admin@resto.com">
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="input-group">
+          <span class="input-group-text bg-dark text-white border-0"><span class="material-symbols-outlined fs-6">lock</span></span>
+          <input type="password" class="form-control bg-dark text-white border-0" id="password" 
+                 [(ngModel)]="password" name="password" required placeholder="********">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-warning w-100 fw-bold py-2" [disabled]="loginForm.invalid || isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        {{ isLoading ? 'Iniciando...' : 'Iniciar Sesión' }}
+      </button>
+
+      <div *ngIf="errorMsg" class="alert alert-danger mt-3 text-center py-2" role="alert">
+        {{ errorMsg }}
+      </div>
+
+    </form>
+  </div>
+</div>
