@@ -1,33 +1,24 @@
-<!-- router outlet para visualizar las secciones hijas de layout-pedido -->
 <div class="d-flex flex-column flex-md-row min-vh-100">
     <div class="d-flex flex-column flex-grow-1">
         <router-outlet></router-outlet>
     </div>
-    <!-- segunda columna para pedidos -->
-    <button class="btn btn-dark material-symbols-outlined"
-    type="button" 
-    data-bs-toggle="offcanvas" 
-    data-bs-target="#pedidos"
-    aria-controls="pedidos">
+    <button class="btn btn-dark material-symbols-outlined" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#pedidos" aria-controls="pedidos">
     </button>
-    <div class="offcanvas offcanvas-end text-bg-dark d-flex flex-column"
-    tabindex="-1" 
-    id="pedidos" 
-    aria-labelledby="pedidosLabel">
+    <div class="offcanvas offcanvas-end text-bg-dark d-flex flex-column" tabindex="-1" id="pedidos"
+        aria-labelledby="pedidosLabel">
         <div class="offcanvas-header justify-content-center">
             <h2 class="fs-4 fw-bold">Mesa Nº </h2>
-            <!-- <span class="icono material-symbols-outlined">shopping_cart</span> -->
         </div>
         <div class="offcanvas-body d-flex justify-content-center align-items-center text-center">
             <h6 *ngIf="items.length == 0">Toca un producto para agregarlo</h6>
             <div *ngFor="let p of items" class="card bg-dark text-white w-100">
-            {{p.nombre}} - {{p.precio | currency}}
+                {{p.nombre}} - {{p.precio | currency}}
             </div>
         </div>
         <div class="offcanvas-footer text-center py-4">
             <h5 class="mb-3">Total: {{total | currency}}</h5>
-            <button class="btn btn-warning w-100">Confirmar pedido</button>
+            <button class="btn btn-warning w-100" (click)="confirmarPedido()">Confirmar pedido</button>
         </div>
     </div>
 </div>
-<!-- ===================== -->
