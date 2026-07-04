@@ -57,7 +57,31 @@ export class CarritoService {
     return this.itemsSource.getValue().reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
   }
 
-  // Limpiar carrito
+  restarProducto(idProducto: number) {
+    let items = this.itemsSource.getValue();
+    const itemIndex = items.findIndex(i => i.idProducto === idProducto);
+    
+    if (itemIndex > -1) {
+      if (items[itemIndex].cantidad > 1) {
+        items[itemIndex].cantidad -= 1;
+      } else {
+        items.splice(itemIndex, 1);
+      }
+      this.itemsSource.next([...items]);
+    }
+  }
+
+  eliminarProducto(idProducto: number) {
+    let items = this.itemsSource.getValue();
+    items = items.filter(i => i.idProducto !== idProducto);
+    this.itemsSource.next([...items]);
+  }
+
+  vaciarCarrito() {
+    this.itemsSource.next([]);
+  }
+
+  // Limpiar carrito (incluye mesa)
   limpiarCarrito() {
     this.itemsSource.next([]);
     this.mesaActivaSource.next(null);

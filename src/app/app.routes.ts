@@ -14,7 +14,7 @@ import { Usuario } from './components/usuario/usuario';
 import { UsuarioForm } from './components/usuario-form/usuario-form';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'login', component: Login },
     { path: 'favoritos', component: FavoritosComponent },
 

@@ -10,16 +10,24 @@ export class ProductoService {
 
   constructor(private http: HttpClient) { }
 
-  obtenerProductos(categoria:string): Observable<any[]> {
-
-    return this.http.get<any[]>(`${this.apiUrl}?categoria=${categoria}`);
+  obtenerProductos(categoria?: string): Observable<any[]> {
+    const url = categoria ? `${this.apiUrl}?categoria=${categoria}` : this.apiUrl;
+    return this.http.get<any[]>(url);
   }
 
-  // obtenerBebidas(): Observable<any[]> {
-  //   return this.http.get<any[]>(`${this.apiUrl}?categoria=bebida`);
-  // }
+  obtenerProductoPorId(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
 
-  // obtenerPostres(): Observable<any[]> {
-  //   return this.http.get<any[]>(`${this.apiUrl}?categoria=postre`);
-  // }
+  crearProducto(producto: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, producto);
+  }
+
+  actualizarProducto(id: number, producto: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, producto);
+  }
+
+  eliminarProducto(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
 }

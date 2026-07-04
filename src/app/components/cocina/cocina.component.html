@@ -4,7 +4,10 @@
     @for (c of comandas; track c.idPedido) {
       <div class="card col-md-3 m-2 bg-dark text-white border-light shadow">
         <div class="card-header border-light">
-          <h5 class="mb-0">MESA {{ c.mesa?.numMesa || 'S/N' }}</h5>
+          <h5 class="mb-0">
+            @if (c.tipoPedido === 'DELIVERY') { DELIVERY } 
+            @else { MESA {{ c.mesa?.numMesa || 'S/N' }} }
+          </h5>
           <small class="text-warning">Pedido #{{ c.idPedido }}</small>
         </div>
         <div class="card-body">

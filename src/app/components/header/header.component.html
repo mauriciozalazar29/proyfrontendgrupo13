@@ -1,30 +1,47 @@
-<header class="p-3 bg-dark text-white d-flex align-items-center">
-    <button class="btn btn-dark" 
+<header class="p-3 bg-dark text-white d-flex align-items-center shadow-sm">
+    <!-- Botón Menú Empleados (Solo si está autenticado) -->
+    <button *ngIf="authService.estaAutenticado()" class="btn btn-dark" 
     type="button"
     data-bs-toggle="offcanvas" 
     data-bs-target="#sidebar" 
     aria-controls="sidebar">
         <span class="material-symbols-outlined">menu</span>
     </button>
-    <h1 class="fs-4 fw-bold">RestoYa</h1>
+    
+    <!-- Título / Logo clickeable al Home -->
+    <a routerLink="/home" class="text-decoration-none text-white ms-2">
+        <h1 class="fs-4 fw-bold mb-0 title-glow">RestoYa</h1>
+    </a>
+
+    <!-- Navegación Cliente (Píldoras centrales, solo si NO es empleado) -->
+    <nav *ngIf="!authService.estaAutenticado()" class="mx-auto d-none d-md-flex gap-2">
+        <a routerLink="/platos" routerLinkActive="btn-warning text-dark fw-bold" class="btn btn-outline-light rounded-pill px-4">🍔 Platos</a>
+        <a routerLink="/bebidas" routerLinkActive="btn-warning text-dark fw-bold" class="btn btn-outline-light rounded-pill px-4">🥤 Bebidas</a>
+        <a routerLink="/postres" routerLinkActive="btn-warning text-dark fw-bold" class="btn btn-outline-light rounded-pill px-4">🍦 Postres</a>
+    </nav>
+
     <div class="ms-auto d-flex align-items-center gap-2">
-        <!-- carrito  -->
-            <button *ngIf="authService.estaAutenticado()" class="btn btn-dark material-symbols-outlined"
-                type="button" 
-                data-bs-toggle="offcanvas" 
-                data-bs-target="#pedidos"
-                aria-controls="pedidos">
+        <!-- carrito (Siempre visible porque el cliente pide delivery) -->
+        <button class="btn btn-warning rounded-circle d-flex align-items-center justify-content-center p-2 shadow position-relative"
+            type="button" 
+            data-bs-toggle="offcanvas" 
+            data-bs-target="#pedidos"
+            aria-controls="pedidos">
             <span class="material-symbols-outlined">shopping_cart</span>
+            <span *ngIf="cantidadCarrito > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light">
+                {{cantidadCarrito}}
+            </span>
+        </button>
+
+        <!-- login / logout -->
+        <button class="btn btn-outline-secondary btn-sm ms-3" *ngIf="!authService.estaAutenticado()" [routerLink]="['/login']">
+            Staff
+        </button>
+        <div *ngIf="authService.estaAutenticado()" class="d-flex align-items-center gap-3 ms-3 border-start ps-3">
+            <span class="text-white-50">Hola, {{ (authService.usuario$ | async)?.nombre }}</span>
+            <button class="btn btn-outline-danger d-flex align-items-center gap-2 btn-sm" (click)="logout()">
+                <span class="material-symbols-outlined fs-6">logout</span> Salir
             </button>
-            <!-- login / logout -->
-            <button class="btn btn-outline-light" *ngIf="!authService.estaAutenticado()" [routerLink]="['/login']">
-                Iniciar Sesión
-            </button>
-            <div *ngIf="authService.estaAutenticado()" class="d-flex align-items-center gap-3">
-                <span class="text-white-50">Hola, {{ (authService.usuario$ | async)?.nombre }}</span>
-                <button class="btn btn-outline-danger d-flex align-items-center gap-2" (click)="logout()">
-                    <span class="material-symbols-outlined fs-6">logout</span> Salir
-                </button>
-            </div>
+        </div>
     </div>
 </header>

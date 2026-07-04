@@ -31,6 +31,8 @@ export class Login {
           this.router.navigate(['/caja']);
         } else if (this.authService.tienePermiso('gestionar_usuarios')) {
           this.router.navigate(['/usuario']); // Panel admin si existiera
+        } else if (this.authService.tienePermiso('ver_items_cocina')) {
+          this.router.navigate(['/cocina']);
         } else {
           this.router.navigate(['/mesa']);
         }

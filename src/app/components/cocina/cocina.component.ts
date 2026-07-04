@@ -1,6 +1,7 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CocinaService } from '../../services/cocina.service';
+import { PedidoService } from '../../services/pedido.service';
+
 @Component({
   selector: 'app-cocina',
   imports: [CommonModule],
@@ -10,25 +11,24 @@ import { CocinaService } from '../../services/cocina.service';
 export class CocinaComponent implements OnInit {
   comandas: any[] = [];
 
-  constructor(private cocinaService: CocinaService) {}
+  constructor(
+    private pedidoService: PedidoService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.cargarComandas();
   }
 
   cargarComandas() {
-    this.cocinaService.obtenerComidas().subscribe(res => {
+    this.pedidoService.obtenerPedidosCocina().subscribe(res => {
       this.comandas = res;
+      this.cdr.detectChanges();
     });
   }
 
-  // Función para filtrar bebidas en la vista
-  esComida(categoria: string): boolean {
-    return categoria !== 'bebida';
-  }
-
   cambiarEstado(id: number, estado: string) {
-    this.cocinaService.actualizarEstadoCocina(id, estado).subscribe(() => {
+    this.pedidoService.cambiarEstado(id, estado).subscribe(() => {
       this.cargarComandas(); // Refrescar lista
     });
   }

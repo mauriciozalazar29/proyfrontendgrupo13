@@ -7,18 +7,54 @@
     </button>
     <div class="offcanvas offcanvas-end text-bg-dark d-flex flex-column" tabindex="-1" id="pedidos"
         aria-labelledby="pedidosLabel">
-        <div class="offcanvas-header justify-content-center">
-            <h2 class="fs-4 fw-bold">Mesa Nº </h2>
+        <div class="offcanvas-header justify-content-center border-bottom border-secondary">
+            <h2 class="fs-4 fw-bold">
+                <i class="fas fa-shopping-cart me-2"></i>
+                <ng-container *ngIf="mesaActiva; else deliveryTitle">
+                    Mesa Nº {{ mesaActiva.numMesa }}
+                </ng-container>
+                <ng-template #deliveryTitle>Tu Pedido Delivery</ng-template>
+            </h2>
         </div>
-        <div class="offcanvas-body d-flex justify-content-center align-items-center text-center">
-            <h6 *ngIf="items.length == 0">Toca un producto para agregarlo</h6>
-            <div *ngFor="let p of items" class="card bg-dark text-white w-100">
-                {{p.nombre}} - {{p.precio | currency}}
+        <div class="offcanvas-body d-flex flex-column align-items-center text-center">
+            <h6 *ngIf="items.length == 0" class="text-muted mt-5">Tu carrito está vacío.<br>¡Agregá algo rico!</h6>
+            
+            <!-- Items del carrito -->
+            <div *ngFor="let p of items" class="card bg-dark text-white border-secondary w-100 mb-2 shadow-sm">
+                <div class="card-body p-2 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="fw-bold text-start">{{p.nombre}}</span>
+                        <span class="text-warning fw-bold">{{p.precio * p.cantidad | currency}}</span>
+                    </div>
+                    
+                    <!-- Controles de cantidad -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-outline-danger btn-sm p-1 d-flex align-items-center justify-content-center" (click)="eliminarItem(p.idProducto)">
+                            <span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
+                        </button>
+                        
+                        <div class="d-flex align-items-center bg-secondary rounded-pill px-2">
+                            <button class="btn btn-sm text-white fw-bold px-2 py-0 border-0" (click)="restarItem(p.idProducto)">-</button>
+                            <span class="px-2 fw-bold">{{p.cantidad}}</span>
+                            <button class="btn btn-sm text-white fw-bold px-2 py-0 border-0" (click)="sumarItem(p)">+</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="offcanvas-footer text-center py-4">
-            <h5 class="mb-3">Total: {{total | currency}}</h5>
-            <button class="btn btn-warning w-100" (click)="confirmarPedido()">Confirmar pedido</button>
+        <div class="offcanvas-footer text-center py-4 px-3 border-top border-secondary">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">Total:</h4>
+                <h4 class="mb-0 text-warning">{{total | currency}}</h4>
+            </div>
+            
+            <button *ngIf="items.length > 0" class="btn btn-outline-danger btn-sm w-100 mb-3" (click)="vaciarCarrito()">
+                <i class="fas fa-trash-alt me-2"></i> Vaciar Carrito
+            </button>
+
+            <button class="btn btn-warning w-100 fw-bold mt-2 pulse-btn" (click)="confirmarPedido()">
+                CONFIRMAR PEDIDO
+            </button>
         </div>
     </div>
 </div>

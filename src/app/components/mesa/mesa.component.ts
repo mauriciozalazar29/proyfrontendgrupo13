@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MesaService } from '../../services/mesa.service';
 import { CarritoService } from '../../services/carrito.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-mesa',
@@ -20,16 +21,18 @@ export class MesaComponent implements OnInit {
     capacidad: null
   };
 
-  esAdmin: boolean = true;
+  esAdmin: boolean = false;
 
   constructor(
     private mesaService: MesaService,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private carritoService: CarritoService
+    private carritoService: CarritoService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
+    this.esAdmin = this.authService.tienePermiso('gestionar_usuarios');
     this.cargarMesas();
   }
   atenderMesa(idMesa: number, numMesa: number): void {
