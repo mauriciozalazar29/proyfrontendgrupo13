@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <h2 class="text-white mb-4">Panel de Cocina</h2>
+  <div class="row">
+    @for (c of comandas; track c.idPedido) {
+      <div class="card col-md-3 m-2 bg-dark text-white border-light shadow">
+        <div class="card-header border-light">
+          <h5 class="mb-0">MESA {{ c.mesa?.numMesa || 'S/N' }}</h5>
+          <small class="text-warning">Pedido #{{ c.idPedido }}</small>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled">
+            @for (det of c.detalles; track det.idDetalle) {
+              @if (det.producto.categoria !== 'bebida') {
+                <li class="mb-2">
+                  <span class="badge bg-light text-dark me-2">{{ det.cantidad }}</span>
+                  {{ det.producto.nombre }}
+                </li>
+              }
+            }
+          </ul>
+          <hr class="border-light">
+          <p class="mb-0">Estado: <span class="badge bg-info">{{ c.estado }}</span></p>
+        </div>
+        <div class="card-footer d-flex gap-2 border-light">
+          @if (c.estado !== 'EN_COCINA' && c.estado !== 'LISTO_PARA_ENTREGA') {
+            <button class="btn btn-warning btn-sm w-100" (click)="cambiarEstado(c.idPedido, 'EN_COCINA')">Cocinar</button>
+          }
+          @if (c.estado === 'EN_COCINA') {
+            <button class="btn btn-success btn-sm w-100" (click)="cambiarEstado(c.idPedido, 'LISTO_PARA_ENTREGA')">Listo</button>
+          }
+        </div>
+      </div>
+    } @empty {
+      <div class="alert alert-info w-100 text-center">No hay pedidos pendientes en cocina.</div>
+    }
+  </div>
+</div>

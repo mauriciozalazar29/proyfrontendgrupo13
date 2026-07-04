@@ -8,7 +8,7 @@ import { PlatosComponent } from './components/platos/platos.component';
 import { PostresComponent } from './components/postres/postres.component';
 import { LayoutPedidoComponent } from './components/layout-pedido/layout-pedido.component';
 import { QrComponent } from './components/qr/qr';
-
+import { CocinaComponent } from './components/cocina/cocina.component';
 import { Login } from './components/login/login';
 import { Usuario } from './components/usuario/usuario';
 import { UsuarioForm } from './components/usuario-form/usuario-form';
@@ -32,6 +32,7 @@ export const routes: Routes = [
             { path: 'home', component: HomeComponent },
             { path: 'mesa', component: MesaComponent },
             { path: 'caja', component: CajaComponent },
+            {path: 'cocina', component: CocinaComponent},
         ],
     }
 ];

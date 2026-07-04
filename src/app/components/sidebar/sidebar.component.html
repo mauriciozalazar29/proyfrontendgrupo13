@@ -33,7 +33,7 @@
 
         <!-- Gerente y Cocina -->
         <button *ngIf="authService.tieneRol('Gerente') || authService.tieneRol('Cocina')" class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
-            type="button" [routerLink]="['platos']" routerLinkActive="active">
+            type="button" [routerLink]="['cocina']" routerLinkActive="active">
             <span class="material-symbols-outlined">restaurant</span>
             <span class="text-white">Cocina</span>
         </button>
