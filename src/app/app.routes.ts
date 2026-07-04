@@ -12,27 +12,35 @@ import { CocinaComponent } from './components/cocina/cocina.component';
 import { Login } from './components/login/login';
 import { Usuario } from './components/usuario/usuario';
 import { UsuarioForm } from './components/usuario-form/usuario-form';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
+import { AdminProductosComponent } from './components/admin-productos/admin-productos';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'login', component: Login },
     { path: 'favoritos', component: FavoritosComponent },
 
-    { path: 'usuario', component: Usuario },
-    { path: 'usuario-form', component: UsuarioForm },
-    { path: 'usuario-form/:id', component: UsuarioForm },
+    { path: 'usuario', component: Usuario, canActivate: [authGuard, roleGuard], data: { roles: ['Gerente'] } },
+    { path: 'usuario-form', component: UsuarioForm, canActivate: [authGuard, roleGuard], data: { roles: ['Gerente'] } },
+    { path: 'usuario-form/:id', component: UsuarioForm, canActivate: [authGuard, roleGuard], data: { roles: ['Gerente'] } },
+    
+    // Nueva ruta de Administración de Menú
+    { path: 'admin/productos', component: AdminProductosComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Gerente'] } },
 
     { path: 'qr/:idMesa', component: QrComponent },
     {
         path: '', component: LayoutPedidoComponent,
-        children: [   // bebidas, platos, postres usaran el layout de pedido
+        children: [   
             { path: 'bebidas', component: BebidasComponent },
             { path: 'platos', component: PlatosComponent },
             { path: 'postres', component: PostresComponent },
             { path: 'home', component: HomeComponent },
-            { path: 'mesa', component: MesaComponent },
-            { path: 'caja', component: CajaComponent },
-            {path: 'cocina', component: CocinaComponent},
+            
+            // Rutas Privadas del Staff
+            { path: 'mesa', component: MesaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Mozo', 'Gerente'] } },
+            { path: 'caja', component: CajaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Cajero', 'Gerente'] } },
+            { path: 'cocina', component: CocinaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Cocina', 'Gerente'] } },
         ],
     }
 ];

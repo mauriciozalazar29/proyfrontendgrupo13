@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CajaService } from '../../services/caja.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-caja',
@@ -43,29 +44,38 @@ export class CajaComponent implements OnInit {
 
   abrirCaja(): void {
     if (this.montoInicial < 0) {
-      alert("El monto no puede ser negativo");
+      Swal.fire('Error', 'El monto no puede ser negativo', 'error');
       return;
     }
 
     this.cajaService.abrirCaja(this.montoInicial).subscribe({
       next: () => {
-        alert("¡Caja abierta exitosamente!");
+        Swal.fire('¡Éxito!', 'Caja abierta exitosamente', 'success');
         this.verificarCaja();
       },
-      error: (err) => alert(err.error?.message || "Error al abrir la caja")
+      error: (err) => Swal.fire('Error', err.error?.message || "Error al abrir la caja", 'error')
     });
   }
 
   cerrarCaja(): void {
-    if (confirm("¿Estas seguro que queres cerrar la caja del turno?")) {
-      this.cajaService.cerrarCaja().subscribe({
-        next: (res) => {
-          alert(`Caja cerrada. Monto final: $${res.caja.montoFinal}`);
-          this.verificarCaja();
-        },
-        error: (err) => alert(err.error?.message || "Error al cerrar la caja")
-      });
-    }
+    Swal.fire({
+      title: '¿Cerrar Caja?',
+      text: '¿Estas seguro que queres cerrar la caja del turno?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, cerrar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cajaService.cerrarCaja().subscribe({
+          next: (res) => {
+            Swal.fire('Caja Cerrada', `Monto final: $${res.caja.montoFinal}`, 'info');
+            this.verificarCaja();
+          },
+          error: (err) => Swal.fire('Error', err.error?.message || "Error al cerrar la caja", 'error')
+        });
+      }
+    });
   }
 
   descargarPDF(idCaja: number): void {

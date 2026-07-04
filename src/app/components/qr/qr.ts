@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MesaService } from '../../services/mesa.service';
 import { CarritoService } from '../../services/carrito.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-qr',
@@ -38,12 +39,12 @@ export class QrComponent implements OnInit {
             // redirigimos al cliente al menu de platos
             this.router.navigate(['/platos']);
           } else {
-            alert('La mesa N ' + numMesaDeseada + ' no existe en el sistema.');
+            Swal.fire('Error', 'La mesa N° ' + numMesaDeseada + ' no existe en el sistema.', 'error');
             this.router.navigate(['/']);
           }
         },
         error: (err) => {
-          alert('Error de conexion con el sistema.');
+          Swal.fire('Error', 'Error de conexión con el sistema.', 'error');
           this.router.navigate(['/']);
         }
       });

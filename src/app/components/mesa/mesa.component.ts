@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MesaService } from '../../services/mesa.service';
 import { CarritoService } from '../../services/carrito.service';
 import { AuthService } from '../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-mesa',
@@ -55,18 +56,18 @@ export class MesaComponent implements OnInit {
 
   crearMesa(): void {
     if (!this.nuevaMesa.numMesa || !this.nuevaMesa.capacidad) {
-      alert("Por favor complete todos los campos.");
+      Swal.fire('Atención', 'Por favor complete todos los campos.', 'warning');
       return;
     }
 
     this.mesaService.crearMesa(this.nuevaMesa as any).subscribe({
       next: () => {
-        alert("Mesa creada correctamente.");
+        Swal.fire('¡Éxito!', 'Mesa creada correctamente.', 'success');
         this.nuevaMesa = { numMesa: null, capacidad: null };
         this.cargarMesas();
       },
       error: (err) => {
-        alert(err.error?.message || "Error al crear la mesa.");
+        Swal.fire('Error', err.error?.message || "Error al crear la mesa.", 'error');
       }
     });
   }
@@ -77,28 +78,48 @@ export class MesaComponent implements OnInit {
 
     this.mesaService.cambiarEstado(idMesa, nuevoEstado).subscribe({
       next: () => this.cargarMesas(),
-      error: (err) => alert(err.error?.message || "Error al cambiar estado")
+      error: (err) => Swal.fire('Error', err.error?.message || "Error al cambiar estado", 'error')
     });
   }
 
   liberarMesa(idMesa: number): void {
-    if (confirm("¿Confirmás que el cliente ya pagó y se retiró? La mesa quedará LIBRE.")) {
-      this.mesaService.liberarMesa(idMesa).subscribe({
-        next: () => this.cargarMesas(),
-        error: (err) => alert(err.error?.message || "Error al liberar la mesa")
-      });
-    }
+    Swal.fire({
+      title: '¿Liberar Mesa?',
+      text: '¿Confirmás que el cliente ya pagó y se retiró? La mesa quedará LIBRE.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, liberar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.mesaService.liberarMesa(idMesa).subscribe({
+          next: () => this.cargarMesas(),
+          error: (err) => Swal.fire('Error', err.error?.message || "Error al liberar la mesa", 'error')
+        });
+      }
+    });
   }
 
   eliminarMesa(idMesa: number): void {
-    if (confirm("¿Estas seguro que queres eliminar esta mesa?")) {
-      this.mesaService.eliminarMesa(idMesa).subscribe({
-        next: () => {
-          alert("Mesa eliminada.");
-          this.cargarMesas();
-        },
-        error: (err) => alert(err.error?.message || "Error al eliminar la mesa.")
-      });
-    }
+    Swal.fire({
+      title: '¿Eliminar Mesa?',
+      text: '¿Estás seguro que querés eliminar esta mesa?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.mesaService.eliminarMesa(idMesa).subscribe({
+          next: () => {
+            Swal.fire('¡Eliminada!', 'Mesa eliminada.', 'success');
+            this.cargarMesas();
+          },
+          error: (err) => Swal.fire('Error', err.error?.message || "Error al eliminar la mesa.", 'error')
+        });
+      }
+    });
   }
 }

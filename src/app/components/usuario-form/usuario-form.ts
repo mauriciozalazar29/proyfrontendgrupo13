@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 import { RolService } from '../../services/rol.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuario-form',
@@ -71,7 +72,7 @@ export class UsuarioForm implements OnInit {
       },
       error: (err) => {
         console.error('Error', err);
-        alert('Error al cargar el usuario');
+        Swal.fire('Error', 'Error al cargar el usuario', 'error');
         this.loading = false;
         this.router.navigate(['/usuario']);
         this.cdr.detectChanges();
@@ -81,7 +82,7 @@ export class UsuarioForm implements OnInit {
 
   guardar(): void {
     if (!this.usuario.nombre || !this.usuario.email || (!this.isEdit && !this.usuario.password)) {
-      alert('Por favor complete los campos obligatorios');
+      Swal.fire('Atención', 'Por favor complete los campos obligatorios', 'warning');
       return;
     }
 
@@ -102,7 +103,7 @@ export class UsuarioForm implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          alert('Error al actualizar el usuario');
+          Swal.fire('Error', 'Error al actualizar el usuario', 'error');
           this.saving = false;
           this.cdr.detectChanges();
         }
@@ -111,7 +112,7 @@ export class UsuarioForm implements OnInit {
       this.usuarioService.createUsuario(dataToSend).subscribe({
         next: (res) => {
           if (res.status === '0') {
-            alert(res.msg); // Ej: Ya existe el email
+            Swal.fire('Atención', res.msg, 'warning'); // Ej: Ya existe el email
             this.saving = false;
             this.cdr.detectChanges();
           } else {
@@ -122,7 +123,7 @@ export class UsuarioForm implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          alert('Error al crear el usuario');
+          Swal.fire('Error', 'Error al crear el usuario', 'error');
           this.saving = false;
           this.cdr.detectChanges();
         }
@@ -135,22 +136,33 @@ export class UsuarioForm implements OnInit {
   }
 
   eliminar(): void {
-    if (confirm('¿Está seguro de eliminar este usuario?')) {
-      this.saving = true;
-      this.usuarioService.deleteUsuario(this.usuario.usuarioId).subscribe({
-        next: (res) => {
-          this.saving = false;
-          this.cdr.detectChanges();
-          this.router.navigate(['/usuario']);
-        },
-        error: (err) => {
-          console.error('Error eliminando', err);
-          alert('Error al eliminar usuario');
-          this.saving = false;
-          this.cdr.detectChanges();
-        }
-      });
-    }
+    Swal.fire({
+      title: '¿Eliminar Usuario?',
+      text: '¿Está seguro de eliminar este usuario? Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.saving = true;
+        this.usuarioService.deleteUsuario(this.usuario.usuarioId).subscribe({
+          next: (res) => {
+            this.saving = false;
+            this.cdr.detectChanges();
+            this.router.navigate(['/usuario']);
+          },
+          error: (err) => {
+            console.error('Error eliminando', err);
+            Swal.fire('Error', 'Error al eliminar usuario', 'error');
+            this.saving = false;
+            this.cdr.detectChanges();
+          }
+        });
+      }
+    });
   }
 }
 
