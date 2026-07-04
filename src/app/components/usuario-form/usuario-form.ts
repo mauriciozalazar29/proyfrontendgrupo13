@@ -1,46 +1,67 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { UsuarioService } from '../../services/usuario.service';
 import { RolService } from '../../services/rol.service';
 import Swal from 'sweetalert2';
 
+// Custom Validator: Validar DNI exacto de 8 dígitos numéricos
+export function dniValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (!value) return null; 
+    const isValid = /^[0-9]{8}$/.test(value);
+    return isValid ? null : { dniInvalido: true };
+  };
+}
+
 @Component({
   selector: 'app-usuario-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './usuario-form.html',
   styleUrl: './usuario-form.css',
 })
 export class UsuarioForm implements OnInit {
-  usuario: any = {
-    nombre: '',
-    apellido: '',
-    dni: '',
-    email: '',
-    password: '',
-    rolId: null
-  };
+  usuarioForm!: FormGroup;
   roles: any[] = [];
   isEdit: boolean = false;
   loading: boolean = false;
   saving: boolean = false;
+  usuarioIdAEditar: number | null = null;
 
   constructor(
+    private fb: FormBuilder,
     private usuarioService: UsuarioService,
     private rolService: RolService,
     private router: Router,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    this.crearFormulario();
+  }
+
+  crearFormulario() {
+    this.usuarioForm = this.fb.group({
+      nombre: ['', [Validators.required]],
+      apellido: [''],
+      dni: ['', [dniValidator()]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]], // Luego se quita el required si es edición
+      rolId: [null]
+    });
+  }
 
   ngOnInit(): void {
     this.cargarRoles();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEdit = true;
-      this.cargarUsuario(Number(id));
+      this.usuarioIdAEditar = Number(id);
+      this.usuarioForm.get('password')?.clearValidators();
+      this.usuarioForm.get('password')?.updateValueAndValidity();
+      this.cargarUsuario(this.usuarioIdAEditar);
     }
   }
 
@@ -61,12 +82,20 @@ export class UsuarioForm implements OnInit {
     this.loading = true;
     this.usuarioService.getUsuario(id).subscribe({
       next: (res) => {
-        this.usuario = res;
-        // Mapear rol si lo tiene
-        if (this.usuario.Rols && this.usuario.Rols.length > 0) {
-          this.usuario.rolId = this.usuario.Rols[0].rolId;
+        let rolId = null;
+        if (res.Rols && res.Rols.length > 0) {
+          rolId = res.Rols[0].rolId;
         }
-        this.usuario.password = ''; // Limpiar password por seguridad
+        
+        this.usuarioForm.patchValue({
+          nombre: res.nombre,
+          apellido: res.apellido,
+          dni: res.dni,
+          email: res.email,
+          password: '', 
+          rolId: rolId
+        });
+
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -81,21 +110,21 @@ export class UsuarioForm implements OnInit {
   }
 
   guardar(): void {
-    if (!this.usuario.nombre || !this.usuario.email || (!this.isEdit && !this.usuario.password)) {
-      Swal.fire('Atención', 'Por favor complete los campos obligatorios', 'warning');
+    if (this.usuarioForm.invalid) {
+      this.usuarioForm.markAllAsTouched();
+      Swal.fire('Atención', 'Por favor revise los errores en el formulario', 'warning');
       return;
     }
 
     this.saving = true;
 
-    // Si es edición y no escribió password, la eliminamos para no pisarla con string vacío
-    const dataToSend = { ...this.usuario };
+    const dataToSend = { ...this.usuarioForm.value };
     if (this.isEdit && !dataToSend.password) {
       delete dataToSend.password;
     }
 
-    if (this.isEdit) {
-      this.usuarioService.updateUsuario(this.usuario.usuarioId, dataToSend).subscribe({
+    if (this.isEdit && this.usuarioIdAEditar) {
+      this.usuarioService.updateUsuario(this.usuarioIdAEditar, dataToSend).subscribe({
         next: (res) => {
           this.saving = false;
           this.cdr.detectChanges();
@@ -112,7 +141,7 @@ export class UsuarioForm implements OnInit {
       this.usuarioService.createUsuario(dataToSend).subscribe({
         next: (res) => {
           if (res.status === '0') {
-            Swal.fire('Atención', res.msg, 'warning'); // Ej: Ya existe el email
+            Swal.fire('Atención', res.msg, 'warning'); 
             this.saving = false;
             this.cdr.detectChanges();
           } else {
@@ -136,6 +165,8 @@ export class UsuarioForm implements OnInit {
   }
 
   eliminar(): void {
+    if(!this.usuarioIdAEditar) return;
+
     Swal.fire({
       title: '¿Eliminar Usuario?',
       text: '¿Está seguro de eliminar este usuario? Esta acción no se puede deshacer.',
@@ -148,7 +179,7 @@ export class UsuarioForm implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.saving = true;
-        this.usuarioService.deleteUsuario(this.usuario.usuarioId).subscribe({
+        this.usuarioService.deleteUsuario(this.usuarioIdAEditar!).subscribe({
           next: (res) => {
             this.saving = false;
             this.cdr.detectChanges();

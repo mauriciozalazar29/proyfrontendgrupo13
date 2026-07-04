@@ -10,6 +10,8 @@ import { forkJoin } from 'rxjs';
 
 import Swal from 'sweetalert2';
 
+import { AuthService } from '../../services/auth.service';
+
 @Component({
   selector: 'app-layout-pedido',
   standalone: true,
@@ -27,6 +29,7 @@ export class LayoutPedidoComponent implements OnInit {
     private pedidoService: PedidoService,
     private mesaService: MesaService,
     private pagoService: PagoService,
+    private authService: AuthService,
     private router: Router
   ) { }
 
@@ -71,44 +74,65 @@ export class LayoutPedidoComponent implements OnInit {
       return;
     }
 
-    // Si es Delivery (Cliente), mostramos el modal bonito de Login Social
     if (tipoPedido === 'DELIVERY') {
       Swal.fire({
         title: '¡Ya casi terminamos!',
         html: `
-          <p class="mb-4 text-muted">Para confirmar tu delivery y pagar con MercadoPago, necesitás iniciar sesión rápido.</p>
-          <div class="d-flex flex-column gap-3">
-            <button id="btn-google" class="btn btn-outline-dark d-flex align-items-center justify-content-center p-2">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" width="24" class="me-2">
-              Continuar con Google
-            </button>
-            <button id="btn-fb" class="btn btn-primary d-flex align-items-center justify-content-center p-2">
-              <i class="fab fa-facebook-f me-2"></i> Continuar con Facebook
-            </button>
-          </div>
+          <p class="mb-4 text-muted">Para confirmar tu delivery y pagar con MercadoPago, necesitás iniciar sesión.</p>
+          <div id="google-btn-container" class="d-flex justify-content-center"></div>
         `,
         showConfirmButton: false,
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
         didOpen: () => {
-          const btnGoogle = document.getElementById('btn-google');
-          const btnFb = document.getElementById('btn-fb');
-
-          // Al clickear cualquiera, cerramos el modal y procesamos el pedido
-          btnGoogle?.addEventListener('click', () => {
-            Swal.close();
-            this.procesarPedidoEnBackend(idMesa, tipoPedido);
-          });
-          btnFb?.addEventListener('click', () => {
-            Swal.close();
-            this.procesarPedidoEnBackend(idMesa, tipoPedido);
-          });
+          // Cargar script de Google dinámicamente si no existe
+          if (!document.getElementById('google-jssdk')) {
+            const script = document.createElement('script');
+            script.id = 'google-jssdk';
+            script.src = 'https://accounts.google.com/gsi/client';
+            script.async = true;
+            script.defer = true;
+            script.onload = () => this.renderGoogleButton(idMesa, tipoPedido);
+            document.head.appendChild(script);
+          } else {
+            this.renderGoogleButton(idMesa, tipoPedido);
+          }
         }
       });
     } else {
-      // Si es de Mesa (Mozo), procesamos directamente
       this.procesarPedidoEnBackend(idMesa, tipoPedido);
     }
+  }
+
+  private renderGoogleButton(idMesa: number | null, tipoPedido: string) {
+    // @ts-ignore
+    window.google.accounts.id.initialize({
+      client_id: '123-dummy-client.apps.googleusercontent.com', // Reemplazar con Cliente ID Real
+      callback: (response: any) => {
+        Swal.fire({ title: 'Autenticando...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+        // Importar authService al vuelo no es ideal, deberíamos inyectarlo.
+        // Lo inyectaremos en el constructor.
+        this.procesarLoginGoogle(response.credential, idMesa, tipoPedido);
+      }
+    });
+    
+    // @ts-ignore
+    window.google.accounts.id.renderButton(
+      document.getElementById('google-btn-container'),
+      { theme: 'outline', size: 'large' }
+    );
+  }
+
+  private procesarLoginGoogle(token: string, idMesa: number | null, tipoPedido: string) {
+    this.authService.googleLogin(token).subscribe({
+      next: () => {
+        Swal.close();
+        this.procesarPedidoEnBackend(idMesa, tipoPedido);
+      },
+      error: (err) => {
+        Swal.fire('Error', 'Fallo la autenticación con Google', 'error');
+      }
+    });
   }
 
   private procesarPedidoEnBackend(idMesa: number | null, tipoPedido: string) {

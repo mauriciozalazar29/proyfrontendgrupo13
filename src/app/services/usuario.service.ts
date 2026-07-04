@@ -10,8 +10,12 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) { }
 
-  public getUsuarios(): Observable<any> {
-    return this.http.get<any>(this.urlApi);
+  public getUsuarios(page?: number, size?: number): Observable<any> {
+    let url = this.urlApi;
+    if (page !== undefined && size !== undefined) {
+      url += `?page=${page}&size=${size}`;
+    }
+    return this.http.get<any>(url);
   }
 
   public getUsuario(id: number): Observable<any> {

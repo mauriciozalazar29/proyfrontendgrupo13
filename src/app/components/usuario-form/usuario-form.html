@@ -21,37 +21,45 @@
 
     <!-- Formulario -->
     <div class="card-body p-4 p-md-5" *ngIf="!loading">
-      <form (ngSubmit)="guardar()" #usuarioForm="ngForm">
+      <form [formGroup]="usuarioForm" (ngSubmit)="guardar()">
         
         <div class="row g-4">
           <!-- Columna Izquierda -->
           <div class="col-md-6">
             <h5 class="text-warning mb-4 fw-semibold border-bottom border-secondary border-opacity-25 pb-2">Información Personal</h5>
             
-            <div class="mb-3">
+            <div class="mb-3 position-relative pb-3">
               <label class="form-label text-muted small text-uppercase fw-bold letter-spacing-1">Nombre <span class="text-danger">*</span></label>
               <div class="input-group">
                 <span class="input-group-text bg-dark text-muted border-secondary border-opacity-50"><i class="fas fa-user"></i></span>
-                <input type="text" name="nombre" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
-                       [(ngModel)]="usuario.nombre" required placeholder="Ej: Juan">
+                <input type="text" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
+                       formControlName="nombre" placeholder="Ej: Juan"
+                       [ngClass]="{'is-invalid': usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched}">
+              </div>
+              <div class="invalid-feedback d-block position-absolute" *ngIf="usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched" style="bottom: -5px; font-size: 0.75rem;">
+                El nombre es obligatorio.
               </div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 position-relative pb-3">
               <label class="form-label text-muted small text-uppercase fw-bold letter-spacing-1">Apellido</label>
               <div class="input-group">
                 <span class="input-group-text bg-dark text-muted border-secondary border-opacity-50"><i class="far fa-user"></i></span>
-                <input type="text" name="apellido" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
-                       [(ngModel)]="usuario.apellido" placeholder="Ej: Pérez">
+                <input type="text" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
+                       formControlName="apellido" placeholder="Ej: Pérez">
               </div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 position-relative pb-3">
               <label class="form-label text-muted small text-uppercase fw-bold letter-spacing-1">DNI</label>
               <div class="input-group">
                 <span class="input-group-text bg-dark text-muted border-secondary border-opacity-50"><i class="fas fa-id-card"></i></span>
-                <input type="text" name="dni" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
-                       [(ngModel)]="usuario.dni" placeholder="Ej: 12345678">
+                <input type="text" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
+                       formControlName="dni" placeholder="Ej: 12345678"
+                       [ngClass]="{'is-invalid': usuarioForm.get('dni')?.invalid && usuarioForm.get('dni')?.touched}">
+              </div>
+              <div class="invalid-feedback d-block position-absolute text-warning" *ngIf="usuarioForm.get('dni')?.errors?.['dniInvalido'] && usuarioForm.get('dni')?.touched" style="bottom: -5px; font-size: 0.75rem;">
+                El DNI debe tener exactamente 8 números.
               </div>
             </div>
           </div>
@@ -60,30 +68,39 @@
           <div class="col-md-6">
             <h5 class="text-warning mb-4 fw-semibold border-bottom border-secondary border-opacity-25 pb-2">Credenciales y Rol</h5>
             
-            <div class="mb-3">
+            <div class="mb-3 position-relative pb-3">
               <label class="form-label text-muted small text-uppercase fw-bold letter-spacing-1">Correo Electrónico <span class="text-danger">*</span></label>
               <div class="input-group">
                 <span class="input-group-text bg-dark text-muted border-secondary border-opacity-50"><i class="fas fa-envelope"></i></span>
-                <input type="email" name="email" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
-                       [(ngModel)]="usuario.email" required placeholder="correo@restoya.com">
+                <input type="email" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
+                       formControlName="email" placeholder="correo@restoya.com"
+                       [ngClass]="{'is-invalid': usuarioForm.get('email')?.invalid && usuarioForm.get('email')?.touched}">
+              </div>
+              <div class="invalid-feedback d-block position-absolute" *ngIf="usuarioForm.get('email')?.invalid && usuarioForm.get('email')?.touched" style="bottom: -5px; font-size: 0.75rem;">
+                <span *ngIf="usuarioForm.get('email')?.errors?.['required']">El correo es obligatorio.</span>
+                <span *ngIf="usuarioForm.get('email')?.errors?.['email']">Debe ser un correo válido.</span>
               </div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 position-relative pb-3">
               <label class="form-label text-muted small text-uppercase fw-bold letter-spacing-1">Contraseña <span *ngIf="!isEdit" class="text-danger">*</span></label>
               <div class="input-group mb-1">
                 <span class="input-group-text bg-dark text-muted border-secondary border-opacity-50"><i class="fas fa-key"></i></span>
-                <input type="password" name="password" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
-                       [(ngModel)]="usuario.password" [required]="!isEdit" placeholder="********">
+                <input type="password" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
+                       formControlName="password" placeholder="********"
+                       [ngClass]="{'is-invalid': usuarioForm.get('password')?.invalid && usuarioForm.get('password')?.touched}">
               </div>
-              <small class="text-info fw-semibold" *ngIf="isEdit"><i class="fas fa-info-circle me-1"></i>Deje en blanco para mantener la actual.</small>
+              <small class="text-info fw-semibold position-absolute" *ngIf="isEdit" style="bottom: -20px;"><i class="fas fa-info-circle me-1"></i>Deje en blanco para mantener la actual.</small>
+              <div class="invalid-feedback d-block position-absolute" *ngIf="usuarioForm.get('password')?.invalid && usuarioForm.get('password')?.touched" style="bottom: -5px; font-size: 0.75rem;">
+                La contraseña es obligatoria.
+              </div>
             </div>
             
-            <div class="mb-3">
+            <div class="mb-3 position-relative pb-3" [ngClass]="{'mt-4': isEdit}">
               <label class="form-label text-muted small text-uppercase fw-bold letter-spacing-1">Rol Asignado</label>
               <div class="input-group">
                 <span class="input-group-text bg-dark text-muted border-secondary border-opacity-50"><i class="fas fa-shield-alt"></i></span>
-                <select class="form-select custom-input bg-dark text-white border-secondary border-opacity-50" name="rolId" [(ngModel)]="usuario.rolId">
+                <select class="form-select custom-input bg-dark text-white border-secondary border-opacity-50" formControlName="rolId">
                   <option [ngValue]="null">-- Sin Rol Principal --</option>
                   <option *ngFor="let rol of roles" [ngValue]="rol.rolId">{{ rol.nombre }}</option>
                 </select>

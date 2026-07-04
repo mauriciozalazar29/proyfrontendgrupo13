@@ -14,6 +14,10 @@ import Swal from 'sweetalert2';
 export class Usuario implements OnInit {
   usuarios: any[] = [];
   loading: boolean = true;
+  currentPage: number = 0;
+  pageSize: number = 10;
+  totalPages: number = 0;
+  totalItems: number = 0;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -26,14 +30,21 @@ export class Usuario implements OnInit {
   }
 
   cargarUsuarios(): void {
-    console.log('Iniciando cargarUsuarios...');
     this.loading = true;
-    this.usuarioService.getUsuarios().subscribe({
+    this.usuarioService.getUsuarios(this.currentPage, this.pageSize).subscribe({
       next: (res) => {
-        console.log('Respuesta de usuarios recibida:', res);
-        this.usuarios = res;
+        // Soporte tanto para respuesta paginada (data) como cruda (arreglo directo, retrocompatibilidad)
+        if (res && res.data) {
+          this.usuarios = res.data;
+          this.totalPages = res.totalPages;
+          this.totalItems = res.totalItems;
+        } else {
+          this.usuarios = res;
+          this.totalPages = 1;
+          this.totalItems = res.length;
+        }
+        
         this.loading = false;
-        console.log('loading seteado a false. usuarios.length =', this.usuarios?.length);
         this.cdr.detectChanges(); // FORZAR DIBUJADO DE ANGULAR
       },
       error: (err) => {
@@ -43,6 +54,13 @@ export class Usuario implements OnInit {
         Swal.fire('Error', 'Error al cargar los usuarios: ' + err.message, 'error');
       }
     });
+  }
+
+  cambiarPagina(nuevaPagina: number): void {
+    if (nuevaPagina >= 0 && nuevaPagina < this.totalPages) {
+      this.currentPage = nuevaPagina;
+      this.cargarUsuarios();
+    }
   }
 
   crearUsuario(): void {

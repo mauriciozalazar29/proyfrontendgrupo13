@@ -1,10 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PedidoService } from '../../services/pedido.service';
+import { EstadoPedidoPipe } from '../../pipes/estado-pedido.pipe';
 
 @Component({
   selector: 'app-cocina',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, EstadoPedidoPipe],
   templateUrl: './cocina.component.html',
   styleUrl: './cocina.component.css',
 })

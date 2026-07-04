@@ -11,7 +11,7 @@
       <div class="col-12 col-md-6 col-lg-4 col-xl-3">
         <!-- Comanda Card -->
         <div class="card bg-dark text-white border-0 rounded-4 shadow-lg h-100 ticket-card"
-             [ngClass]="{'border-start border-warning border-4': c.estado === 'RECIBIDO', 'border-start border-info border-4': c.estado === 'EN_COCINA'}">
+             [ngClass]="{'border-start border-warning border-4': c.estado === 'PENDIENTE', 'border-start border-info border-4': c.estado === 'EN_COCINA'}">
           
           <!-- Header de la Comanda -->
           <div class="card-header border-bottom border-secondary border-opacity-50 py-3 d-flex justify-content-between align-items-center">
@@ -47,8 +47,8 @@
             <div class="mb-3 d-flex justify-content-between align-items-center px-2">
               <span class="text-muted small">Estado:</span>
               <span class="badge rounded-pill px-3 py-2 fw-semibold" 
-                    [ngClass]="c.estado === 'RECIBIDO' ? 'bg-danger' : 'bg-info text-dark'">
-                {{ c.estado.replace('_', ' ') }}
+                    [ngClass]="c.estado === 'PENDIENTE' ? 'bg-danger' : 'bg-info text-dark'">
+                {{ c.estado | estadoPedido }}
               </span>
             </div>
 

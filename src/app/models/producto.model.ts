@@ -5,5 +5,4 @@ export interface Producto {
     precio: number;
     imagenUrl: string; // falta en el diagrama
     categoria: string;
-    stock: number;
 }

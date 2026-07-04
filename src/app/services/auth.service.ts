@@ -26,6 +26,18 @@ export class AuthService {
     );
   }
 
+  googleLogin(token: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/google`, { token }).pipe(
+      tap(res => {
+        if (res.token) {
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('usuario', JSON.stringify(res.usuario));
+          this.usuarioSubject.next(res.usuario);
+        }
+      })
+    );
+  }
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
