@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CajaService {
-  private apiUrl = 'http://localhost:3000/api/caja';
+  private apiUrl = 'https://proybackendgrupo13-9bp9.onrender.com/api/caja';
 
   constructor(private http: HttpClient) { }
 

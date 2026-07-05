@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PagoService {
-  private apiUrl = 'http://localhost:3000/api/pagos';
+  private apiUrl = 'https://proybackendgrupo13-9bp9.onrender.com/api/pagos';
 
   constructor(private http: HttpClient) { }
 

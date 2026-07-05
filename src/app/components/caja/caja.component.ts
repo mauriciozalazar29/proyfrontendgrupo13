@@ -79,10 +79,10 @@ export class CajaComponent implements OnInit {
   }
 
   descargarPDF(idCaja: number): void {
-    window.open(`http://localhost:3000/api/reportes/caja/${idCaja}/pdf`, '_blank');
+    window.open(`https://proybackendgrupo13-9bp9.onrender.com/api/reportes/caja/${idCaja}/pdf`, '_blank');
   }
 
   descargarExcel(idCaja: number): void {
-    window.open(`http://localhost:3000/api/reportes/caja/${idCaja}/excel`, '_blank');
+    window.open(`https://proybackendgrupo13-9bp9.onrender.com/api/reportes/caja/${idCaja}/excel`, '_blank');
   }
 }

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class RolService {
 
-  urlApi: string = "http://localhost:3000/api/roles/";
+  urlApi: string = "https://proybackendgrupo13-9bp9.onrender.com/api/roles/";
 
   constructor(private http: HttpClient) { }
 

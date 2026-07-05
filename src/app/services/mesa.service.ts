@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class MesaService {
-  private apiUrl = 'http://localhost:3000/api/mesas';
+  private apiUrl = 'https://proybackendgrupo13-9bp9.onrender.com/api/mesas';
 
   constructor(private http: HttpClient) { }
 

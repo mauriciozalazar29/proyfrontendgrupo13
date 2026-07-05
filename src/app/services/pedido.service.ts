@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PedidoService {
-  private apiUrl = 'http://localhost:3000/api/pedidos';
-  private detallesUrl = 'http://localhost:3000/api/detalles-pedidos';
+  private apiUrl = 'https://proybackendgrupo13-9bp9.onrender.com/api/pedidos';
+  private detallesUrl = 'https://proybackendgrupo13-9bp9.onrender.com/api/detalles-pedidos';
 
   constructor(private http: HttpClient) { }
 

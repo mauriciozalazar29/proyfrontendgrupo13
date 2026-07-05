@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CocinaService {
-  private apiUrl = 'http://localhost:3000/api/cocina';
+  private apiUrl = 'https://proybackendgrupo13-9bp9.onrender.com/api/cocina';
 
   constructor(private http: HttpClient) { }
 
