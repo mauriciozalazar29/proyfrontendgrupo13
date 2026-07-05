@@ -15,6 +15,7 @@ import { UsuarioForm } from './components/usuario-form/usuario-form';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { AdminProductosComponent } from './components/admin-productos/admin-productos';
+import { HistorialAccesos } from './components/historial-accesos/historial-accesos';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,6 +28,7 @@ export const routes: Routes = [
     
     // Nueva ruta de Administración de Menú
     { path: 'admin/productos', component: AdminProductosComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Gerente'] } },
+    { path: 'admin/historial', component: HistorialAccesos, canActivate: [authGuard, roleGuard], data: { roles: ['Gerente'] } },
 
     { path: 'qr/:idMesa', component: QrComponent },
     {
