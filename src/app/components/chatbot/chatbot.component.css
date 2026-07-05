@@ -1,0 +1,19 @@
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+}
+
+.chat-window {
+    width: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.float-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+}
