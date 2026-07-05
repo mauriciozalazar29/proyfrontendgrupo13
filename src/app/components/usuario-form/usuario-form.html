@@ -42,11 +42,15 @@
             </div>
 
             <div class="mb-3 position-relative pb-3">
-              <label class="form-label text-muted small text-uppercase fw-bold letter-spacing-1">Apellido</label>
+              <label class="form-label text-muted small text-uppercase fw-bold letter-spacing-1">Apellido <span class="text-danger">*</span></label>
               <div class="input-group">
                 <span class="input-group-text bg-dark text-muted border-secondary border-opacity-50"><i class="far fa-user"></i></span>
                 <input type="text" class="form-control custom-input bg-dark text-white border-secondary border-opacity-50" 
-                       formControlName="apellido" placeholder="Ej: Pérez">
+                       formControlName="apellido" placeholder="Ej: Pérez"
+                       [ngClass]="{'is-invalid': usuarioForm.get('apellido')?.invalid && usuarioForm.get('apellido')?.touched}">
+              </div>
+              <div class="invalid-feedback d-block position-absolute" *ngIf="usuarioForm.get('apellido')?.invalid && usuarioForm.get('apellido')?.touched" style="bottom: -5px; font-size: 0.75rem;">
+                El apellido es obligatorio.
               </div>
             </div>
 
@@ -92,7 +96,8 @@
               </div>
               <small class="text-info fw-semibold position-absolute" *ngIf="isEdit" style="bottom: -20px;"><i class="fas fa-info-circle me-1"></i>Deje en blanco para mantener la actual.</small>
               <div class="invalid-feedback d-block position-absolute" *ngIf="usuarioForm.get('password')?.invalid && usuarioForm.get('password')?.touched" style="bottom: -5px; font-size: 0.75rem;">
-                La contraseña es obligatoria.
+                <span *ngIf="usuarioForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</span>
+                <span *ngIf="usuarioForm.get('password')?.errors?.['minlength']">Debe tener al menos 6 caracteres.</span>
               </div>
             </div>
             

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductoService } from '../../services/producto.service';
@@ -13,12 +13,17 @@ import Swal from 'sweetalert2';
 })
 export class AdminProductosComponent implements OnInit {
   productos: any[] = [];
+  cargando: boolean = true;
   productoForm!: FormGroup;
   modoEdicion: boolean = false;
   idEditando: number | null = null;
   mostrarModal: boolean = false;
 
-  constructor(private fb: FormBuilder, private productoService: ProductoService) {
+  constructor(
+    private fb: FormBuilder, 
+    private productoService: ProductoService,
+    private cdr: ChangeDetectorRef
+  ) {
     this.initForm();
   }
 
@@ -38,9 +43,17 @@ export class AdminProductosComponent implements OnInit {
   }
 
   cargarProductos() {
+    this.cargando = true;
     this.productoService.obtenerProductos().subscribe({
-      next: (data) => this.productos = data,
-      error: (err) => console.error(err)
+      next: (data) => {
+        this.productos = data;
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error(err);
+        this.cargando = false;
+      }
     });
   }
 

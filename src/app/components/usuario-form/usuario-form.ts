@@ -45,10 +45,10 @@ export class UsuarioForm implements OnInit {
   crearFormulario() {
     this.usuarioForm = this.fb.group({
       nombre: ['', [Validators.required]],
-      apellido: [''],
+      apellido: ['', [Validators.required]],
       dni: ['', [dniValidator()]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]], // Luego se quita el required si es edición
+      password: ['', [Validators.required, Validators.minLength(6)]],
       rolId: [null]
     });
   }
