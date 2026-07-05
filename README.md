@@ -1,59 +1,93 @@
-# Proyfrontendgrupo13
+# 🍔 RestoYa - Frontend (Angular)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+Este repositorio contiene el **Frontend** del sistema integral de gestión y delivery para restaurantes "RestoYa". Fue desarrollado utilizando **Angular 17+** y diseñado con enfoque Mobile-First usando **Bootstrap 5** y Vanilla CSS.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🎯 Objetivos del Proyecto
+Diseñar e implementar un sistema web completo aplicando los conocimientos de **Programación y Servicios Web (UNJu)**. Este frontend se encarga de brindar una experiencia de usuario fluida, adaptativa y segura, consumiendo una API RESTful desarrollada en Node.js.
 
-```bash
-ng serve
+## 🛠️ Tecnología Aplicada
+- **Framework Core:** Angular (Componentes, Routing, Reactive Forms).
+- **Estilos y Maquetación:** Bootstrap 5, Vanilla CSS, Inter Font.
+- **Iconografía:** FontAwesome 6, Google Material Symbols.
+- **Autenticación Social:** Google Identity Services (`@abacritt/angularx-social-login`).
+- **Alertas:** SweetAlert2.
+
+---
+
+## 🏗️ Arquitectura y Comunicación (Frontend <-> Backend)
+
+```mermaid
+graph TD
+    A[Cliente / Navegador] -->|HTTP GET/POST/PUT/DELETE| B(Backend Express REST API)
+    A -->|Login OAuth| C(Google Identity Services)
+    A -->|Redirección de Pagos| D(MercadoPago Checkout)
+    
+    B -->|Generación de Preferencias| D
+    C -->|ID Token JWT| A
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 📂 Estructura de Carpetas
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```text
+src/
+ ├── app/
+ │   ├── components/         # Componentes visuales modulares
+ │   │   ├── admin-productos/  # CRUD del Menú
+ │   │   ├── layout-pedido/    # Sistema de Carrito y Checkout
+ │   │   ├── login/            # Autenticación de Empleados
+ │   │   ├── mesa/             # Gestión de Mesas del local
+ │   │   ├── sidebar/          # Navegación del sistema
+ │   │   └── usuario-form/     # Gestión de Empleados
+ │   ├── models/             # Interfaces de TypeScript
+ │   ├── pipes/              # Pipes personalizados (e.g. estado-pedido)
+ │   └── services/           # Comunicación HTTP con el Backend
+ │       ├── auth.service.ts
+ │       ├── carrito.service.ts
+ │       ├── pago.service.ts
+ │       └── producto.service.ts
+ ├── assets/                 # Imágenes estáticas y recursos
+ ├── index.html              # Punto de entrada y CDNs
+ └── styles.css              # Estilos globales y tokens de diseño
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 👥 Funcionalidades por Rol
 
-## Building
+El sistema adapta su interfaz dependiendo del rol del usuario autenticado:
 
-To build the project run:
+- **Cliente (Público):** Puede ver el menú digital interactivo, agregar productos al carrito, e iniciar sesión con Google para proceder al pago online (Delivery) mediante MercadoPago.
+- **Mozo:** Puede ver el mapa de mesas, cambiar su estado (Libre/Ocupada) y enviar comandas directamente a la cocina.
+- **Cocina:** Visualiza en tiempo real los ítems pendientes por preparar y los marca como "Listos" para despachar.
+- **Cajero:** Visualiza los pedidos listos y gestiona el cobro presencial (Efectivo/Tarjeta).
+- **Gerente:** Tiene acceso total. Posee un "Menú" especial en la barra lateral para gestionar Usuarios (CRUD de empleados) y Productos (CRUD del menú). Además visualiza el Dashboard de estadísticas.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🔌 APIs Externas Utilizadas (Consumo Frontend)
 
-## Running unit tests
+1. **Google Identity Services:** Implementado en el flujo de pagos. El cliente hace clic en "Pagar", se abre el pop-up de Google, y el frontend captura el ID Token para enviarlo a nuestro backend.
+2. **MercadoPago Checkout Pro:** Al confirmar el carrito, el frontend recibe un `init_point` del backend y redirige al usuario a la pasarela de pagos segura de MercadoPago.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## 🛡️ Mecanismos de Seguridad Implementados (Frontend)
 
-## Running end-to-end tests
+- **Guards de Angular:** Protegen las rutas privadas (`/admin`, `/cocina`, etc.) para que no se pueda acceder ingresando la URL manualmente si no se tiene el Rol correspondiente.
+- **Almacenamiento Seguro:** Manejo de JWT en `localStorage`.
+- **Formularios Reactivos (Reactive Forms):** Validaciones estrictas del lado del cliente (ej. requerimiento de Apellido, validación de formato de Email, contraseñas de más de 6 caracteres, DNI numérico).
+- **Control de Estado Visual:** Los botones de "Guardar" se deshabilitan si el formulario es inválido o si ya hay una petición HTTP en curso, previniendo el Doble-Submit.
 
-For end-to-end (e2e) testing, run:
+---
 
-```bash
-ng e2e
-```
+## 📸 Capturas de Pantalla
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+> *(Colocar aquí las capturas de pantalla requeridas para el informe final)*
+> 
+> `![Login](ruta)`
+> `![Menú](ruta)`
+> `![Dashboard](ruta)`
