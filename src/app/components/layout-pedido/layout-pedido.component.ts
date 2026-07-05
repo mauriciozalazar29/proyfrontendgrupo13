@@ -107,7 +107,7 @@ export class LayoutPedidoComponent implements OnInit {
   private renderGoogleButton(idMesa: number | null, tipoPedido: string) {
     // @ts-ignore
     window.google.accounts.id.initialize({
-      client_id: '123-dummy-client.apps.googleusercontent.com', // Reemplazar con Cliente ID Real
+      client_id: '317530665710-rclujld7vo1j9vangvt5enqnghkilde4.apps.googleusercontent.com', // Cliente ID Real
       callback: (response: any) => {
         Swal.fire({ title: 'Autenticando...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
         // Importar authService al vuelo no es ideal, deberíamos inyectarlo.
