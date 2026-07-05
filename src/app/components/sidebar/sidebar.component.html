@@ -17,6 +17,13 @@
             <span class="text-white">Usuarios</span>
         </button>
 
+        <!-- Solo Gerente -->
+        <button *ngIf="authService.tieneRol('Gerente')" class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
+            type="button" [routerLink]="['/admin/productos']" routerLinkActive="active">
+            <span class="material-symbols-outlined">inventory</span>
+            <span class="text-white">Menú</span>
+        </button>
+
         <!-- Gerente y Mozo -->
         <button *ngIf="authService.tieneRol('Gerente') || authService.tieneRol('Mozo')" class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
             type="button" [routerLink]="['mesa']" routerLinkActive="active">
