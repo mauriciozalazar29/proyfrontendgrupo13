@@ -14,6 +14,7 @@ import { CarritoService } from '../../services/carrito.service';
 })
 export class PostresComponent implements OnInit{
   postres: Producto[] = [];
+  cargando: boolean = true;
 
   constructor(
     private listaProductos: ProductoService,
@@ -25,9 +26,13 @@ export class PostresComponent implements OnInit{
     this.listaProductos.obtenerProductos('postre').subscribe({
       next: (data) => {
         this.postres = data;
+        this.cargando = false;
         this.cdr.detectChanges();
       },
-      error: (err) => console.error("Error cargando postres", err)
+      error: (err) => {
+        console.error("Error cargando postres", err);
+        this.cargando = false;
+      }
     });
   }
 

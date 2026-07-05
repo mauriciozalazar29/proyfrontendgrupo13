@@ -28,6 +28,13 @@
 
     <!-- Grilla de Mesas -->
     <div class="row g-4">
+      @if (cargando) {
+      <div class="col-12 py-5 text-center">
+          <div class="spinner-border text-warning" role="status" style="width: 3rem; height: 3rem;">
+              <span class="visually-hidden">Cargando...</span>
+          </div>
+      </div>
+      } @else {
       @for (mesa of mesas; track mesa.idMesa) {
       <div class="col-sm-6 col-md-4 col-lg-3">
         
@@ -88,6 +95,7 @@
           <p class="text-muted">Si sos administrador, podés agregar mesas desde el panel superior.</p>
         </div>
       </div>
+      }
       }
     </div>
   </div>

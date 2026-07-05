@@ -14,6 +14,7 @@ import { CarritoService } from '../../services/carrito.service';
 })
 export class PlatosComponent implements OnInit {
   productos: Producto[] = [];
+  cargando: boolean = true;
 
   constructor(
     private listaProductos: ProductoService,
@@ -25,9 +26,13 @@ export class PlatosComponent implements OnInit {
     this.listaProductos.obtenerProductos('plato_principal').subscribe({
       next: (data) => {
         this.productos = data;
+        this.cargando = false;
         this.cdr.detectChanges();
       },
-      error: (err) => console.error("Error cargando platos", err)
+      error: (err) => {
+        console.error("Error cargando platos", err);
+        this.cargando = false;
+      }
     });
   }
 

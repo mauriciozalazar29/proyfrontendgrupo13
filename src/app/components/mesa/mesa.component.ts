@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 })
 export class MesaComponent implements OnInit {
   mesas: any[] = [];
+  cargando: boolean = true;
 
   nuevaMesa = {
     numMesa: null,
@@ -45,12 +46,17 @@ export class MesaComponent implements OnInit {
   }
 
   cargarMesas(): void {
+    this.cargando = true;
     this.mesaService.getMesas().subscribe({
       next: (data) => {
         this.mesas = data.sort((a: any, b: any) => a.numMesa - b.numMesa);
+        this.cargando = false;
         this.cdr.detectChanges();
       },
-      error: (error) => console.error(error)
+      error: (error) => {
+        console.error(error);
+        this.cargando = false;
+      }
     });
   }
 

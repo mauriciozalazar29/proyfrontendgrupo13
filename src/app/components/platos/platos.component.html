@@ -39,8 +39,15 @@
             </div>
         </div>
         
+        <!-- Loading Spinner -->
+        <div *ngIf="cargando" class="col-12 py-5 text-center">
+            <div class="spinner-border text-warning" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+        </div>
+
         <!-- Empty State -->
-        <div *ngIf="productos.length === 0" class="col-12 py-5 text-center">
+        <div *ngIf="!cargando && productos.length === 0" class="col-12 py-5 text-center">
             <div class="glass-panel p-5 rounded-4 d-inline-block">
                 <i class="fas fa-utensils text-muted mb-3" style="font-size: 3rem;"></i>
                 <h4 class="text-white">Aún no hay platos disponibles</h4>
