@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {HeaderComponent} from './components/header/header.component';
 import { AuthService } from './services/auth.service';
+import { ChatbotComponent } from "./components/chatbot/chatbot.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, SidebarComponent, HeaderComponent],
+  imports: [RouterOutlet, CommonModule, SidebarComponent, HeaderComponent, ChatbotComponent,ChatbotComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
