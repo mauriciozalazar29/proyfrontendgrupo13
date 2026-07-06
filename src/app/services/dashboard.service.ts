@@ -11,7 +11,7 @@ import { ResumenDashboard } from '../models/resumen-dashboard';
 })
 export class DashboardService {
 
-  private apiUrl = 'http://localhost:3000/api/dashboard';
+  private apiUrl = 'https://proyfrontendgrupo13.onrender.com/api/dashboard';
 
   constructor(private http: HttpClient) { }
 
