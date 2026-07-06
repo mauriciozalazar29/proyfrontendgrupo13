@@ -83,7 +83,7 @@ export class LayoutPedidoComponent implements OnInit {
     this.carritoService.vaciarCarrito();
   }
 
-  confirmarPedido() {
+  confirmarPedido(metodoElegido: string) {
     const tipoPedido = this.mesaActiva ? 'LOCAL' : 'DELIVERY';
     const idMesa = this.mesaActiva ? this.mesaActiva.idMesa : null;
 
@@ -101,7 +101,7 @@ export class LayoutPedidoComponent implements OnInit {
       Swal.fire({
         title: '¡Ya casi terminamos!',
         html: `
-          <p class="mb-4 text-muted">Para confirmar tu delivery y pagar con MercadoPago, necesitás iniciar sesión.</p>
+          <p class="mb-4 text-muted">Para confirmar tu delivery, necesitás iniciar sesión.</p>
           <div id="google-btn-container" class="d-flex justify-content-center"></div>
         `,
         showConfirmButton: false,
@@ -115,27 +115,25 @@ export class LayoutPedidoComponent implements OnInit {
             script.src = 'https://accounts.google.com/gsi/client';
             script.async = true;
             script.defer = true;
-            script.onload = () => this.renderGoogleButton(idMesa, tipoPedido);
+            script.onload = () => this.renderGoogleButton(idMesa, tipoPedido, metodoElegido);
             document.head.appendChild(script);
           } else {
-            this.renderGoogleButton(idMesa, tipoPedido);
+            this.renderGoogleButton(idMesa, tipoPedido, metodoElegido);
           }
         }
       });
     } else {
-      this.procesarPedidoEnBackend(idMesa, tipoPedido);
+      this.procesarPedidoEnBackend(idMesa, tipoPedido, metodoElegido);
     }
   }
 
-  private renderGoogleButton(idMesa: number | null, tipoPedido: string) {
+  private renderGoogleButton(idMesa: number | null, tipoPedido: string, metodoElegido: string) {
     // @ts-ignore
     window.google.accounts.id.initialize({
       client_id: '317530665710-rclujld7vo1j9vangvt5enqnghkilde4.apps.googleusercontent.com', // Cliente ID Real
       callback: (response: any) => {
         Swal.fire({ title: 'Autenticando...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-        // Importar authService al vuelo no es ideal, deberíamos inyectarlo.
-        // Lo inyectaremos en el constructor.
-        this.procesarLoginGoogle(response.credential, idMesa, tipoPedido);
+        this.procesarLoginGoogle(response.credential, idMesa, tipoPedido, metodoElegido);
       }
     });
 
@@ -146,11 +144,11 @@ export class LayoutPedidoComponent implements OnInit {
     );
   }
 
-  private procesarLoginGoogle(token: string, idMesa: number | null, tipoPedido: string) {
+  private procesarLoginGoogle(token: string, idMesa: number | null, tipoPedido: string, metodoElegido: string) {
     this.authService.googleLogin(token).subscribe({
       next: () => {
         Swal.close();
-        this.procesarPedidoEnBackend(idMesa, tipoPedido);
+        this.procesarPedidoEnBackend(idMesa, tipoPedido, metodoElegido);
       },
       error: (err) => {
         Swal.fire('Error', 'Fallo la autenticación con Google', 'error');
@@ -158,7 +156,7 @@ export class LayoutPedidoComponent implements OnInit {
     });
   }
 
-  private procesarPedidoEnBackend(idMesa: number | null, tipoPedido: string) {
+  private procesarPedidoEnBackend(idMesa: number | null, tipoPedido: string, metodoElegido: string) {
     const detallesBackend = this.items.map(item => ({
       idProducto: item.idProducto,
       cantidad: item.cantidad,
@@ -176,8 +174,8 @@ export class LayoutPedidoComponent implements OnInit {
       next: (resPedido) => {
         const idPedido = resPedido.pedido.idPedido;
 
-        if (tipoPedido === 'DELIVERY') {
-          // Si es Delivery, lo mandamos a pagar por MercadoPago
+        if (metodoElegido === 'MERCADOPAGO') {
+          // Pagar con Mercado Pago (Tanto Delivery como Local)
           Swal.fire({
             title: 'Generando link de pago...',
             text: 'Aguardá un instante por favor',
@@ -201,15 +199,18 @@ export class LayoutPedidoComponent implements OnInit {
           });
 
         } else {
-          // Si es Local (Mesa), el pedido se carga en la cuenta de la mesa
+          // EFECTIVO / TRANSFERENCIA (El pago se registra manual después)
           Swal.fire({
             icon: 'success',
             title: '¡Pedido Confirmado!',
-            text: `El pedido fue enviado a la cocina.`,
+            text: tipoPedido === 'DELIVERY' 
+                  ? 'El delivery fue enviado. Podrás pagar en efectivo o transferencia al recibirlo.' 
+                  : 'El pedido fue enviado a la cocina. ¡Podés pagarlo más tarde!',
             confirmButtonColor: '#ffc107'
           });
+          
           this.carritoService.limpiarCarrito();
-          this.router.navigate(['/mesa']);
+          this.router.navigate(['/home']);
         }
       },
       error: (err) => {

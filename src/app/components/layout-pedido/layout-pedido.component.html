@@ -77,8 +77,12 @@
                 <i class="fas fa-trash-alt me-2"></i> Vaciar Carrito
             </button>
 
-            <button class="btn btn-warning btn-lg w-100 fw-bold rounded-4 shadow hover-scale mb-2" style="height: 60px;" (click)="confirmarPedido()">
-                <i class="fas fa-check-circle me-2"></i> CONFIRMAR PEDIDO
+            <!-- Botones de Confirmación por Método de Pago -->
+            <button class="btn btn-info btn-lg w-100 fw-bold rounded-4 shadow hover-scale mb-2" style="height: 50px; background-color: #009ee3; border-color: #009ee3; color: white;" (click)="confirmarPedido('MERCADOPAGO')">
+                <i class="fas fa-credit-card me-2"></i> Pagar con MercadoPago
+            </button>
+            <button class="btn btn-success btn-lg w-100 fw-bold rounded-4 shadow hover-scale mb-2" style="height: 50px;" (click)="confirmarPedido('EFECTIVO')">
+                <i class="fas fa-money-bill-wave me-2"></i> Efectivo / Transferencia
             </button>
         </div>
     </div>
