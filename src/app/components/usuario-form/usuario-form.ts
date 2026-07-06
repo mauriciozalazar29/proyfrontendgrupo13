@@ -44,8 +44,8 @@ export class UsuarioForm implements OnInit {
 
   crearFormulario() {
     this.usuarioForm = this.fb.group({
-      nombre: ['', [Validators.required]],
-      apellido: ['', [Validators.required]],
+      nombre: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
+      apellido: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
       dni: ['', [dniValidator()]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],

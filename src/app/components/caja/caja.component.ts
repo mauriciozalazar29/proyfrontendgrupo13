@@ -2,6 +2,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CajaService } from '../../services/caja.service';
+import { PedidoService } from '../../services/pedido.service';
+import { PagoService } from '../../services/pago.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,11 +16,19 @@ import Swal from 'sweetalert2';
 export class CajaComponent implements OnInit {
   cajaActiva: any = null;
   montoInicial: number = 0;
+  pedidosPendientes: any[] = [];
+  pedidoSeleccionado: any = null;
+  totalPedidoSeleccionado: number = 0;
 
   // variable para ROL 
   esAdminOCajero: boolean = true;
 
-  constructor(private cajaService: CajaService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private cajaService: CajaService, 
+    private pedidoService: PedidoService,
+    private pagoService: PagoService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.verificarCaja();
@@ -28,17 +38,29 @@ export class CajaComponent implements OnInit {
     this.cajaService.obtenerCajaActiva().subscribe({
       next: (data) => {
         this.cajaActiva = data;
+        this.cargarPedidosPendientes();
         this.cdr.detectChanges();
       },
       error: (err) => {
-        // si tira 404 significa que no hay caja abierta
         if (err.status === 404) {
           this.cajaActiva = null;
+          this.pedidosPendientes = [];
           this.cdr.detectChanges();
         } else {
           console.error("Error al obtener caja:", err);
         }
       }
+    });
+  }
+
+  cargarPedidosPendientes(): void {
+    this.pedidoService.obtenerPedidos().subscribe({
+      next: (pedidos) => {
+        // Filtramos solo los pedidos que no estan pagados ni cancelados
+        this.pedidosPendientes = pedidos.filter((p: any) => p.estado !== 'PAGADO' && p.estado !== 'CANCELADO');
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => console.error("Error obteniendo pedidos", err)
     });
   }
 
@@ -74,6 +96,33 @@ export class CajaComponent implements OnInit {
           },
           error: (err) => Swal.fire('Error', err.error?.message || "Error al cerrar la caja", 'error')
         });
+      }
+    });
+  }
+
+  abrirTicket(pedido: any): void {
+    this.pedidoSeleccionado = pedido;
+    this.totalPedidoSeleccionado = pedido.detalles.reduce((acc: number, det: any) => acc + (det.cantidad * det.precioUnitario), 0);
+  }
+
+  cerrarTicket(): void {
+    this.pedidoSeleccionado = null;
+  }
+
+  confirmarCobroEfectivo(): void {
+    if (!this.pedidoSeleccionado) return;
+
+    this.pagoService.registrarPago({
+      idPedido: this.pedidoSeleccionado.idPedido,
+      metodoPago: 'EFECTIVO'
+    }).subscribe({
+      next: () => {
+        Swal.fire('¡Cobro Exitoso!', 'El pago fue registrado, la ganancia se sumó a la caja y la mesa fue liberada automáticamente.', 'success');
+        this.cerrarTicket();
+        this.verificarCaja(); // Recarga la caja y los pedidos
+      },
+      error: (err: any) => {
+        Swal.fire('Error al cobrar', err.error?.message || 'Hubo un problema al registrar el pago.', 'error');
       }
     });
   }

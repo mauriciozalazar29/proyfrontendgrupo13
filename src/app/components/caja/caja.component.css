@@ -9,6 +9,53 @@
   border-color: #6c757d;
 }
 
+.caja-cerrada {
+  transition: all 0.3s ease;
+}
+.caja-abierta {
+  transition: all 0.3s ease;
+}
+
+/* EFECTO TICKET DE VENTA (Bordes Aserrados) */
+.ticket-bg {
+  background-color: #fcfcfc;
+  border-radius: 0;
+}
+
+.ticket-tooth-top {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background-image: radial-gradient(circle at 10px 0, transparent 11px, #fcfcfc 12px);
+  background-size: 20px 20px;
+  background-repeat: repeat-x;
+  z-index: 10;
+}
+
+.ticket-tooth-bottom {
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background-image: radial-gradient(circle at 10px 20px, transparent 11px, #fcfcfc 12px);
+  background-size: 20px 20px;
+  background-repeat: repeat-x;
+  z-index: 10;
+}
+
+.ticket-btn {
+  background-color: #333;
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.ticket-btn:hover {
+  background-color: #111;
+}
+
 .hover-scale {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }

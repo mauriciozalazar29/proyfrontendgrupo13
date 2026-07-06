@@ -16,4 +16,8 @@ export class PagoService {
       metodoPago: 'MERCADOPAGO'
     });
   }
+
+  registrarPago(data: { idPedido: number, metodoPago: string }): Observable<any> {
+    return this.http.post(this.apiUrl, data);
+  }
 }

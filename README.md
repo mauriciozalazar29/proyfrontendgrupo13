@@ -5,14 +5,13 @@ Este repositorio contiene el **Frontend** del sistema integral de gestión y del
 ---
 
 ## 🎯 Objetivos del Proyecto
-Diseñar e implementar un sistema web completo aplicando los conocimientos de **Programación y Servicios Web (UNJu)**. Este frontend se encarga de brindar una experiencia de usuario fluida, adaptativa y segura, consumiendo una API RESTful desarrollada en Node.js.
+Diseñar e implementar un sistema web completo aplicando los conocimientos de **Programación y Servicios Web (UNJu)**. Este frontend se encarga de brindar una experiencia de usuario fluida, adaptativa y segura, consumiendo una API RESTful desarrollada en Node.js, e integrando múltiples APIs de terceros de manera nativa.
 
 ## 🛠️ Tecnología Aplicada
 - **Framework Core:** Angular (Componentes, Routing, Reactive Forms).
-- **Estilos y Maquetación:** Bootstrap 5, Vanilla CSS, Inter Font.
-- **Iconografía:** FontAwesome 6, Google Material Symbols.
-- **Autenticación Social:** Google Identity Services (`@abacritt/angularx-social-login`).
-- **Alertas:** SweetAlert2.
+- **Estilos y Maquetación:** Bootstrap 5, Vanilla CSS, animaciones personalizadas (Glassmorphism, micro-interacciones).
+- **Iconografía:** FontAwesome 6.
+- **Alertas y UI:** SweetAlert2 y Angular CDK (Drag & Drop para Chatbot).
 
 ---
 
@@ -22,6 +21,7 @@ Diseñar e implementar un sistema web completo aplicando los conocimientos de **
 graph TD
     A[Cliente / Navegador] -->|HTTP GET/POST/PUT/DELETE| B(Backend Express REST API)
     A -->|Login OAuth| C(Google Identity Services)
+    A -->|Clima en vivo| E(Open-Meteo API)
     A -->|Redirección de Pagos| D(MercadoPago Checkout)
     
     B -->|Generación de Preferencias| D
@@ -36,7 +36,10 @@ graph TD
 src/
  ├── app/
  │   ├── components/         # Componentes visuales modulares
- │   │   ├── admin-productos/  # CRUD del Menú
+ │   │   ├── admin-productos/  # CRUD del Menú (Platos, Postres, Bebidas)
+ │   │   ├── caja/             # POS, Cobros en efectivo, Ticket de Venta y Reportes
+ │   │   ├── chatbot/          # Asistente IA Integrado (Draggable)
+ │   │   ├── home/             # Landing Page con Widget del Clima
  │   │   ├── layout-pedido/    # Sistema de Carrito y Checkout
  │   │   ├── login/            # Autenticación de Empleados
  │   │   ├── mesa/             # Gestión de Mesas del local
@@ -45,10 +48,6 @@ src/
  │   ├── models/             # Interfaces de TypeScript
  │   ├── pipes/              # Pipes personalizados (e.g. estado-pedido)
  │   └── services/           # Comunicación HTTP con el Backend
- │       ├── auth.service.ts
- │       ├── carrito.service.ts
- │       ├── pago.service.ts
- │       └── producto.service.ts
  ├── assets/                 # Imágenes estáticas y recursos
  ├── index.html              # Punto de entrada y CDNs
  └── styles.css              # Estilos globales y tokens de diseño
@@ -60,34 +59,29 @@ src/
 
 El sistema adapta su interfaz dependiendo del rol del usuario autenticado:
 
-- **Cliente (Público):** Puede ver el menú digital interactivo, agregar productos al carrito, e iniciar sesión con Google para proceder al pago online (Delivery) mediante MercadoPago.
-- **Mozo:** Puede ver el mapa de mesas, cambiar su estado (Libre/Ocupada), enviar comandas a la cocina, y **visualizar el detalle del pedido activo (ticket completo con bebidas)** directamente desde la tarjeta de la mesa.
-- **Cocina:** Visualiza en tiempo real los ítems pendientes por preparar y los marca como "Listos" para despachar. (No visualizan bebidas).
-- **Cajero:** Visualiza los pedidos listos y gestiona el cobro presencial (Efectivo/Transferencia).
-- **Gerente:** Tiene acceso total. Gestiona Usuarios (ABM de empleados), Productos (ABM del menú) y la **Auditoría (Historial de Accesos)**. Las tablas de gestión cuentan con **Paginación inteligente** para manejar grandes volúmenes de datos. Además visualiza el Dashboard de estadísticas.
+- **Cliente (Público):** Puede ver el menú digital interactivo, agregar productos al carrito (Platos, Bebidas, Postres), interactuar con el **Chatbot**, e iniciar sesión con Google para proceder al pago online (Delivery) mediante MercadoPago.
+- **Mozo:** Puede ver el mapa de mesas, cambiar su estado (Libre/Ocupada), enviar comandas a la cocina, y **visualizar el detalle del pedido activo (ticket con bebidas incluidas)**.
+- **Cocina:** Visualiza en tiempo real los **Platos y Postres** pendientes por preparar y los marca como "Listos" para despachar. (La interfaz de cocina filtra automáticamente las bebidas para no sobrecargar a los cocineros).
+- **Cajero:** Su pantalla de `Caja` se transforma en un moderno Punto de Venta (POS). Puede abrir/cerrar turnos, ver la lista de mesas que terminaron de comer, y al hacer clic en "Cobrar", se genera un **Ticket de Venta visual** que, tras confirmar el pago en efectivo, suma la ganancia y libera la mesa automáticamente.
+- **Gerente:** Tiene acceso total. Gestiona Usuarios (ABM con validaciones estrictas), Productos (ABM del menú) y la **Auditoría (Historial de Accesos)**. Visualiza el Dashboard de estadísticas y puede exportar la recaudación en formato PDF o Excel.
 
 ---
 
 ## 🔌 APIs Externas Utilizadas (Consumo Frontend)
 
 1. **Google Identity Services:** Implementado en el flujo de pagos. El cliente hace clic en "Pagar", se abre el pop-up de Google, y el frontend captura el ID Token para enviarlo a nuestro backend.
-2. **MercadoPago Checkout Pro:** Al confirmar el carrito, el frontend recibe un `init_point` del backend y redirige al usuario a la pasarela de pagos segura de MercadoPago.
+2. **MercadoPago Checkout Pro:** Al confirmar el carrito, el frontend recibe un `init_point` del backend y redirige al usuario a la pasarela segura.
+3. **Open-Meteo API (Clima):** La página principal (Home) consume esta API geolocalizada en San Salvador de Jujuy. Si detecta lluvia, muestra una alerta dinámica informando posibles demoras en los envíos de Delivery.
+4. **Chatbot API:** Módulo visual en el frontend que permite al cliente despejar dudas de manera autónoma, utilizando el `Angular CDK Drag` para posicionarlo libremente en pantalla.
 
 ---
 
-## 🛡️ Mecanismos de Seguridad Implementados (Frontend)
+## 🛡️ Mecanismos de Seguridad y UX Implementados
 
-- **Guards de Angular:** Protegen las rutas privadas (`/admin`, `/cocina`, etc.) para que no se pueda acceder ingresando la URL manualmente si no se tiene el Rol correspondiente.
-- **Almacenamiento Seguro:** Manejo de JWT en `localStorage`.
-- **Formularios Reactivos (Reactive Forms):** Validaciones estrictas del lado del cliente (ej. requerimiento de Apellido, validación de formato de Email, contraseñas de más de 6 caracteres, DNI numérico).
-- **Control de Estado Visual:** Los botones de "Guardar" se deshabilitan si el formulario es inválido o si ya hay una petición HTTP en curso, previniendo el Doble-Submit.
+- **Validaciones Estrictas (Reactive Forms):** Control implacable de los datos de entrada (ej. Nombres solo permiten letras y mínimo 2 caracteres, DNI exacto de 8 números). Si hay error, el botón de guardado se bloquea y se muestra ayuda visual.
+- **Guards de Angular:** Protegen las rutas privadas (`/admin`, `/cocina`, etc.) verificando los permisos y el Token del usuario.
+- **Prevención de Errores Humanos:** Interfaz de Caja diseñada para evitar "mesas fantasma". Los Mozos ya no cierran transacciones monetarias; el Cajero centraliza los cobros.
+- **Feedback UI:** Spinners de carga (SweetAlert2) durante los llamados a la API para prevenir que el usuario presione botones múltiples veces.
 
 ---
-
-## 📸 Capturas de Pantalla
-
-> *(Colocar aquí las capturas de pantalla requeridas para el informe final)*
-> 
-> `![Login](ruta)`
-> `![Menú](ruta)`
-> `![Dashboard](ruta)`
+*Desarrollado para la cátedra Programación y Servicios Web - UNJu*

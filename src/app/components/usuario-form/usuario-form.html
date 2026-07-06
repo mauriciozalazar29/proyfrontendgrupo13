@@ -37,7 +37,9 @@
                        [ngClass]="{'is-invalid': usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched}">
               </div>
               <div class="invalid-feedback d-block position-absolute" *ngIf="usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched" style="bottom: -5px; font-size: 0.75rem;">
-                El nombre es obligatorio.
+                <span *ngIf="usuarioForm.get('nombre')?.errors?.['required']">El nombre es obligatorio.</span>
+                <span *ngIf="usuarioForm.get('nombre')?.errors?.['minlength']">Debe tener al menos 2 letras.</span>
+                <span *ngIf="usuarioForm.get('nombre')?.errors?.['pattern']">Solo se permiten letras.</span>
               </div>
             </div>
 
@@ -50,7 +52,9 @@
                        [ngClass]="{'is-invalid': usuarioForm.get('apellido')?.invalid && usuarioForm.get('apellido')?.touched}">
               </div>
               <div class="invalid-feedback d-block position-absolute" *ngIf="usuarioForm.get('apellido')?.invalid && usuarioForm.get('apellido')?.touched" style="bottom: -5px; font-size: 0.75rem;">
-                El apellido es obligatorio.
+                <span *ngIf="usuarioForm.get('apellido')?.errors?.['required']">El apellido es obligatorio.</span>
+                <span *ngIf="usuarioForm.get('apellido')?.errors?.['minlength']">Debe tener al menos 2 letras.</span>
+                <span *ngIf="usuarioForm.get('apellido')?.errors?.['pattern']">Solo se permiten letras.</span>
               </div>
             </div>
 
