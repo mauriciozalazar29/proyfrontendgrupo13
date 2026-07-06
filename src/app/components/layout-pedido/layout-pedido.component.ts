@@ -160,8 +160,8 @@ export class LayoutPedidoComponent implements OnInit {
           this.pagoService.crearPreferenciaPago(idPedido).subscribe({
             next: (resPago) => {
               this.carritoService.limpiarCarrito();
-              // redirigir al cliente a MercadoPago
-              window.location.href = resPago.init_point;
+              // redirigir al cliente a MercadoPago (modo Sandbox para pruebas)
+              window.location.href = resPago.sandbox_init_point;
             },
             error: (err) => {
               const mensajeError = err.error?.message || err.message || 'Error desconocido';
