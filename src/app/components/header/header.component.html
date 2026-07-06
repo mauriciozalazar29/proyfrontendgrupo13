@@ -1,7 +1,7 @@
 <header class="glass-header text-white d-flex align-items-center shadow-lg position-sticky top-0 z-3 px-2 px-md-5 py-2">
     
-    <!-- Botón Menú Empleados (Solo si está autenticado) -->
-    <button *ngIf="authService.estaAutenticado()" class="btn btn-dark rounded-circle me-2 me-md-3 hover-scale shadow-sm d-flex align-items-center justify-content-center flex-shrink-0" 
+    <!-- Botón Menú Empleados (Solo si está autenticado y NO es cliente) -->
+    <button *ngIf="authService.estaAutenticado() && !authService.tieneRol('CLIENTE')" class="btn btn-dark rounded-circle me-2 me-md-3 hover-scale shadow-sm d-flex align-items-center justify-content-center flex-shrink-0" 
         style="width: 45px; height: 45px;"
         type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
         <i class="fas fa-bars fs-5"></i>
@@ -15,8 +15,8 @@
         <h2 class="fs-4 fw-bold mb-0 letter-spacing-1 title-glow d-none d-lg-block">RESTO<span class="text-warning">YA</span></h2>
     </a>
 
-    <!-- Navegación Cliente (Píldoras centrales, siempre visible pero compacta en movil) -->
-    <nav *ngIf="!authService.estaAutenticado()" class="mx-auto d-flex gap-1 gap-md-3 bg-black bg-opacity-25 p-1 p-md-2 rounded-pill border border-secondary border-opacity-25 shadow-sm">
+    <!-- Navegación Cliente (Píldoras centrales, siempre visible para anonimos y clientes) -->
+    <nav *ngIf="!authService.estaAutenticado() || authService.tieneRol('CLIENTE')" class="mx-auto d-flex gap-1 gap-md-3 bg-black bg-opacity-25 p-1 p-md-2 rounded-pill border border-secondary border-opacity-25 shadow-sm">
         <a routerLink="/platos" routerLinkActive="active-nav" class="nav-pill text-decoration-none text-white px-3 px-md-4 py-2 rounded-pill fw-semibold transition-all d-flex align-items-center">
             <i class="fas fa-hamburger text-warning" [class.me-2]="true" [class.me-md-2]="true"></i> 
             <span class="d-none d-sm-inline">Platos</span>
