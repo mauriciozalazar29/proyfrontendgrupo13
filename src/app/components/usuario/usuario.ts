@@ -15,7 +15,7 @@ export class Usuario implements OnInit {
   usuarios: any[] = [];
   loading: boolean = true;
   currentPage: number = 0;
-  pageSize: number = 10;
+  pageSize: number = 15;
   totalPages: number = 0;
   totalItems: number = 0;
 

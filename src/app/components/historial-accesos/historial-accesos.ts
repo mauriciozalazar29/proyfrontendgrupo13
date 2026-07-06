@@ -12,12 +12,18 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 })
 export class HistorialAccesos implements OnInit {
   historial: any[] = [];
+  paginatedHistorial: any[] = [];
   cargando: boolean = true;
   error: string = '';
-  
+
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 15; // Cambiar si se quieren mostrar más/menos filas
+  totalPages: number = 1;
+
   private apiUrl = 'https://proybackendgrupo13-9bp9.onrender.com/api/historial';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.cargarHistorial();
@@ -25,7 +31,7 @@ export class HistorialAccesos implements OnInit {
 
   cargarHistorial() {
     this.cargando = true;
-    
+
     // Configurar headers con el token (usualmente lo haria un interceptor, pero por simplicidad lo armamos manual si hace falta)
     const token = localStorage.getItem('token');
     const headers = { 'Authorization': `Bearer ${token}` };
@@ -33,6 +39,9 @@ export class HistorialAccesos implements OnInit {
     this.http.get<any[]>(this.apiUrl, { headers }).subscribe({
       next: (data) => {
         this.historial = data;
+        this.totalPages = Math.ceil(this.historial.length / this.itemsPerPage);
+        if (this.totalPages === 0) this.totalPages = 1;
+        this.updatePagination();
         this.cargando = false;
       },
       error: (err) => {
@@ -41,5 +50,25 @@ export class HistorialAccesos implements OnInit {
         this.cargando = false;
       }
     });
+  }
+
+  updatePagination() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedHistorial = this.historial.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
   }
 }

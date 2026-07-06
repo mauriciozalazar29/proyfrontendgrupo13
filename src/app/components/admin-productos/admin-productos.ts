@@ -13,11 +13,17 @@ import Swal from 'sweetalert2';
 })
 export class AdminProductosComponent implements OnInit {
   productos: any[] = [];
+  paginatedProductos: any[] = [];
   cargando: boolean = true;
   productoForm!: FormGroup;
   modoEdicion: boolean = false;
   idEditando: number | null = null;
   mostrarModal: boolean = false;
+
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 15;
+  totalPages: number = 1;
 
   constructor(
     private fb: FormBuilder, 
@@ -47,6 +53,9 @@ export class AdminProductosComponent implements OnInit {
     this.productoService.obtenerProductos().subscribe({
       next: (data) => {
         this.productos = data;
+        this.totalPages = Math.ceil(this.productos.length / this.itemsPerPage);
+        if (this.totalPages === 0) this.totalPages = 1;
+        this.updatePagination();
         this.cargando = false;
         this.cdr.detectChanges();
       },
@@ -55,6 +64,26 @@ export class AdminProductosComponent implements OnInit {
         this.cargando = false;
       }
     });
+  }
+
+  updatePagination() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedProductos = this.productos.slice(startIndex, endIndex);
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
   }
 
   abrirModalNuevo() {

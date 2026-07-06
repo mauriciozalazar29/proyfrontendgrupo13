@@ -43,7 +43,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of historial">
+                            <tr *ngFor="let item of paginatedHistorial">
                                 <td class="ps-4 fw-medium text-secondary">#{{ item.idHistorial }}</td>
                                 <td class="fw-bold text-dark">
                                     {{ item.Usuario?.nombre }} {{ item.Usuario?.apellido }}
@@ -67,6 +67,19 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Paginación -->
+                <div class="card-footer bg-white border-top-0 py-3 d-flex justify-content-between align-items-center px-4" *ngIf="historial.length > 0">
+                    <span class="text-muted small">Página {{ currentPage }} de {{ totalPages }}</span>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === 1" (click)="prevPage()">
+                            <i class="fas fa-chevron-left me-1"></i> Anterior
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" [disabled]="currentPage === totalPages" (click)="nextPage()">
+                            Siguiente <i class="fas fa-chevron-right ms-1"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
