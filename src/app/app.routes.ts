@@ -16,6 +16,7 @@ import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { AdminProductosComponent } from './components/admin-productos/admin-productos';
 import { HistorialAccesos } from './components/historial-accesos/historial-accesos';
+import { Dashboard } from './components/dashboard/dashboard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -43,6 +44,7 @@ export const routes: Routes = [
             { path: 'mesa', component: MesaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Mozo', 'Gerente'] } },
             { path: 'caja', component: CajaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Cajero', 'Gerente'] } },
             { path: 'cocina', component: CocinaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Cocina', 'Gerente'] } },
+            { path: 'dashboard', component: Dashboard, canActivate: [authGuard, roleGuard], data: { roles: ['Gerente'] } },
         ],
     }
 ];
