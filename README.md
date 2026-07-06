@@ -61,10 +61,10 @@ src/
 El sistema adapta su interfaz dependiendo del rol del usuario autenticado:
 
 - **Cliente (Público):** Puede ver el menú digital interactivo, agregar productos al carrito, e iniciar sesión con Google para proceder al pago online (Delivery) mediante MercadoPago.
-- **Mozo:** Puede ver el mapa de mesas, cambiar su estado (Libre/Ocupada) y enviar comandas directamente a la cocina.
-- **Cocina:** Visualiza en tiempo real los ítems pendientes por preparar y los marca como "Listos" para despachar.
-- **Cajero:** Visualiza los pedidos listos y gestiona el cobro presencial (Efectivo/Tarjeta).
-- **Gerente:** Tiene acceso total. Posee un "Menú" especial en la barra lateral para gestionar Usuarios (CRUD de empleados) y Productos (CRUD del menú). Además visualiza el Dashboard de estadísticas.
+- **Mozo:** Puede ver el mapa de mesas, cambiar su estado (Libre/Ocupada), enviar comandas a la cocina, y **visualizar el detalle del pedido activo (ticket completo con bebidas)** directamente desde la tarjeta de la mesa.
+- **Cocina:** Visualiza en tiempo real los ítems pendientes por preparar y los marca como "Listos" para despachar. (No visualizan bebidas).
+- **Cajero:** Visualiza los pedidos listos y gestiona el cobro presencial (Efectivo/Transferencia).
+- **Gerente:** Tiene acceso total. Gestiona Usuarios (ABM de empleados), Productos (ABM del menú) y la **Auditoría (Historial de Accesos)**. Las tablas de gestión cuentan con **Paginación inteligente** para manejar grandes volúmenes de datos. Además visualiza el Dashboard de estadísticas.
 
 ---
 
