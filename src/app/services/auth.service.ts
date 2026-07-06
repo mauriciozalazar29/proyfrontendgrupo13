@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://proybackendgrupo13-9bp9.onrender.com/api/auth';
+  private apiUrl = ' http://localhost:3000/api/auth';
   
   // Guardamos el estado del usuario para que los componentes se enteren si hay sesión
   private usuarioSubject = new BehaviorSubject<any>(this.getUsuarioDesdeStorage());
