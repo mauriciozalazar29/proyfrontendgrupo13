@@ -11,8 +11,8 @@ export class PedidoService {
 
   constructor(private http: HttpClient) { }
 
-  crearPedido(idMesa: number | null, tipoPedido: string, detalles: any[]): Observable<any> {
-    const payload: any = { idMesa, tipoPedido, detalles };
+  crearPedido(idMesa: number | null, tipoPedido: string, detalles: any[], usuarioId: number | null = null): Observable<any> {
+    const payload: any = { idMesa, tipoPedido, detalles, usuarioId };
     return this.http.post(this.apiUrl, payload);
   }
 

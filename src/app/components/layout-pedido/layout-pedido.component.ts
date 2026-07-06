@@ -142,7 +142,14 @@ export class LayoutPedidoComponent implements OnInit {
       precioUnitario: item.precio
     }));
 
-    this.pedidoService.crearPedido(idMesa, tipoPedido, detallesBackend).subscribe({
+    const usuarioStr = localStorage.getItem('usuario');
+    let usuarioId = null;
+    if (usuarioStr) {
+      const usuario = JSON.parse(usuarioStr);
+      usuarioId = usuario.idUsuario || usuario.id || null;
+    }
+
+    this.pedidoService.crearPedido(idMesa, tipoPedido, detallesBackend, usuarioId).subscribe({
       next: (resPedido) => {
         const idPedido = resPedido.pedido.idPedido;
 
