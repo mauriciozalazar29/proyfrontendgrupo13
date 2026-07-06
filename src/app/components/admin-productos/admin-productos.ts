@@ -117,7 +117,14 @@ export class AdminProductosComponent implements OnInit {
       return;
     }
 
-    const payload = this.productoForm.value;
+    const formValues = this.productoForm.value;
+    // Calcular el precio final de venta basado en el costo y el margen de ganancia
+    const precioCalculado = formValues.precioCosto * (1 + formValues.porcentajeGanancia / 100);
+    
+    const payload = { 
+      ...formValues, 
+      precio: precioCalculado 
+    };
 
     if (this.modoEdicion && this.idEditando) {
       this.productoService.actualizarProducto(this.idEditando, payload).subscribe({
