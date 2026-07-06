@@ -1,7 +1,7 @@
 <div class="container-fluid py-4 min-vh-100" style="background-color: #121212;">
   <!-- Encabezado -->
   <div class="d-flex align-items-center mb-4">
-    <h2 class="text-white fw-bold m-0"><i class="fas fa-fire text-warning me-3"></i>Centro de Cocina</h2>
+    <h2 class="text-white fw-bold m-0"><i class="fas fa-fire text-warning me-3"></i>Centro de Comandas</h2>
     <div class="flex-grow-1 border-bottom border-secondary ms-4 opacity-25"></div>
   </div>
 
@@ -29,7 +29,7 @@
           <div class="card-body py-4">
             <ul class="list-unstyled mb-0 custom-list">
               @for (det of c.detalles; track det.idDetalle) {
-                @if (det.producto.categoria !== 'bebida') {
+                @if (det.producto.categoria !== 'bebida' || puedeVerBebidas) {
                   <li class="d-flex align-items-center mb-3">
                     <span class="badge rounded-circle bg-light text-dark fw-bold d-flex justify-content-center align-items-center me-3" style="width: 30px; height: 30px; font-size: 1rem;">
                       {{ det.cantidad }}

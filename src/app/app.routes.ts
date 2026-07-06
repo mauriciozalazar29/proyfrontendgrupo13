@@ -43,7 +43,7 @@ export const routes: Routes = [
             // Rutas Privadas del Staff
             { path: 'mesa', component: MesaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Mozo', 'Gerente'] } },
             { path: 'caja', component: CajaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Cajero', 'Gerente'] } },
-            { path: 'cocina', component: CocinaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Cocina', 'Gerente'] } },
+            { path: 'cocina', component: CocinaComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Cocina', 'Gerente', 'Mozo'] } },
             { path: 'dashboard', component: Dashboard, canActivate: [authGuard, roleGuard], data: { roles: ['Gerente'] } },
         ],
     }
