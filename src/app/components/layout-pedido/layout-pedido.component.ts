@@ -97,11 +97,11 @@ export class LayoutPedidoComponent implements OnInit {
       return;
     }
 
-    if (tipoPedido === 'DELIVERY') {
+    if (!this.authService.estaAutenticado()) {
       Swal.fire({
-        title: '¡Ya casi terminamos!',
+        title: '¡Iniciá sesión para pedir!',
         html: `
-          <p class="mb-4 text-muted">Para confirmar tu delivery, necesitás iniciar sesión.</p>
+          <p class="mb-4 text-muted">Para confirmar tu pedido (${tipoPedido.toLowerCase()}), necesitás iniciar sesión primero.</p>
           <div id="google-btn-container" class="d-flex justify-content-center"></div>
         `,
         showConfirmButton: false,
