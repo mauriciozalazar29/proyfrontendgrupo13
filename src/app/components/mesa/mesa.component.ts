@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MesaService } from '../../services/mesa.service';
 import { CarritoService } from '../../services/carrito.service';
 import { AuthService } from '../../services/auth.service';
+import { PedidoService } from '../../services/pedido.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -30,7 +31,8 @@ export class MesaComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private carritoService: CarritoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private pedidoService: PedidoService
   ) { }
 
   ngOnInit(): void {
@@ -125,6 +127,45 @@ export class MesaComponent implements OnInit {
           },
           error: (err) => Swal.fire('Error', err.error?.message || "Error al eliminar la mesa.", 'error')
         });
+      }
+    });
+  }
+
+  verPedido(idMesa: number): void {
+    Swal.fire({ title: 'Buscando pedido...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+    
+    this.pedidoService.obtenerPedidos().subscribe({
+      next: (pedidos) => {
+        const pedidoMesa = pedidos.find(p => p.idMesa === idMesa && p.estado !== 'PAGADO' && p.estado !== 'CANCELADO');
+        
+        if (!pedidoMesa) {
+          Swal.fire('Sin Pedidos', 'Esta mesa está ocupada pero aún no tiene ningún pedido activo asociado.', 'info');
+          return;
+        }
+
+        let detallesHtml = '<ul class="list-group list-group-flush text-start mt-3">';
+        let total = 0;
+        for (let det of pedidoMesa.detalles) {
+          detallesHtml += `<li class="list-group-item d-flex justify-content-between align-items-center bg-transparent text-dark border-secondary">
+            <div>
+              <span class="badge bg-secondary me-2">${det.cantidad}</span> ${det.producto.nombre}
+            </div>
+            <span>$${det.precioUnitario * det.cantidad}</span>
+          </li>`;
+          total += (det.precioUnitario * det.cantidad);
+        }
+        detallesHtml += `</ul><div class="mt-3 text-end fw-bold fs-5">Total: $${total}</div>`;
+
+        Swal.fire({
+          title: `Comanda - Mesa ${pedidoMesa.mesa?.numMesa || idMesa}`,
+          html: detallesHtml,
+          confirmButtonText: 'Cerrar',
+          confirmButtonColor: '#009ee3',
+          width: '500px'
+        });
+      },
+      error: (err) => {
+        Swal.fire('Error', 'No se pudieron obtener los pedidos.', 'error');
       }
     });
   }
