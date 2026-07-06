@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ChatbotService {
-  private apiUrl = 'http://localhost:3000/api/chatbot';
+  private apiUrl = 'https://proybackendgrupo13-9bp9.onrender.com/api/chatbot';
   constructor(private http: HttpClient) { }
   enviarConsulta(entrada: string): Observable<any> {
     return this.http.post(this.apiUrl, {prompt: entrada});
