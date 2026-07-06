@@ -23,6 +23,10 @@ export class LayoutPedidoComponent implements OnInit {
   mesaActiva: { idMesa: number, numMesa: number } | null = null;
   items: ItemCarrito[] = [];
   total: number = 0;
+  
+  // Variables del Clima
+  llueve: boolean = false;
+  climaMensaje: string = '';
 
   constructor(
     private carritoService: CarritoService,
@@ -34,6 +38,8 @@ export class LayoutPedidoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.verificarClima();
+
     this.carritoService.mesaActiva$.subscribe(mesa => {
       this.mesaActiva = mesa;
     });
@@ -42,6 +48,23 @@ export class LayoutPedidoComponent implements OnInit {
       this.items = items;
       this.total = this.carritoService.getTotal();
     });
+  }
+
+  async verificarClima() {
+    try {
+      // Coordenadas de San Salvador de Jujuy
+      const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-24.1833&longitude=-65.3316&current_weather=true');
+      const data = await res.json();
+      const code = data.current_weather.weathercode;
+      
+      // Códigos de lluvia (llovizna, lluvia, tormenta en Open-Meteo)
+      if ([51, 53, 55, 61, 63, 65, 80, 81, 82, 95, 96, 99].includes(code)) {
+        this.llueve = true;
+        this.climaMensaje = 'Día lluvioso en la ciudad 🌧️ El delivery puede tener demoras. ¡Gracias por tu paciencia!';
+      }
+    } catch (e) {
+      console.log('Error obteniendo clima:', e);
+    }
   }
 
   sumarItem(item: ItemCarrito) {

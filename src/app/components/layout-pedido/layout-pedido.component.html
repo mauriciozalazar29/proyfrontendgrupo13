@@ -32,6 +32,14 @@
         <!-- Cuerpo del Carrito (Items) -->
         <div class="offcanvas-body d-flex flex-column align-items-center custom-scrollbar px-3 py-4">
             
+            <!-- Alerta Clima -->
+            <div *ngIf="llueve && !mesaActiva" class="alert alert-info d-flex align-items-center w-100 rounded-4 mb-3 border-0 shadow-sm" style="background-color: rgba(13, 202, 240, 0.15);" role="alert">
+                <i class="fas fa-cloud-showers-heavy fs-3 me-3 text-info"></i>
+                <div class="small fw-semibold text-white">
+                    {{ climaMensaje }}
+                </div>
+            </div>
+            
             <!-- Empty State -->
             <div *ngIf="items.length == 0" class="text-center mt-5 text-muted">
                 <i class="fas fa-box-open fs-1 mb-3 opacity-50"></i>
