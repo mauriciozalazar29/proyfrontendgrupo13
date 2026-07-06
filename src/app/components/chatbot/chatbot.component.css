@@ -3,6 +3,11 @@
     bottom: 20px;
     right: 20px;
     z-index: 2000;
+    cursor: grab;
+}
+
+.chatbot-container:active {
+    cursor: grabbing;
 }
 
 .chat-window {
@@ -30,11 +35,14 @@
         width: 50px;
         height: 50px;
         font-size: 20px;
-        opacity: 0.7; /* Semi-transparente para que se vea la comida atrás */
+        opacity: 0.8;
+        /* Semi-transparente para que se vea la comida atrás */
     }
 
-    .float-btn:active, .float-btn:hover {
-        opacity: 1; /* Se vuelve solido al tocarlo */
+    .float-btn:active,
+    .float-btn:hover {
+        opacity: 1;
+        /* Se vuelve solido al tocarlo */
     }
 
     .chat-window {
