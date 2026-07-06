@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PedidoService } from '../../services/pedido.service';
-import { AuthService } from '../../services/auth.service';
 import { EstadoPedidoPipe } from '../../pipes/estado-pedido.pipe';
 
 @Component({
@@ -13,16 +12,13 @@ import { EstadoPedidoPipe } from '../../pipes/estado-pedido.pipe';
 })
 export class CocinaComponent implements OnInit {
   comandas: any[] = [];
-  puedeVerBebidas: boolean = false;
 
   constructor(
     private pedidoService: PedidoService,
-    private authService: AuthService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.puedeVerBebidas = this.authService.tieneRol('Mozo') || this.authService.tieneRol('Gerente');
     this.cargarComandas();
   }
 
