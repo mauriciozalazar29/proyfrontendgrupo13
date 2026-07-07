@@ -33,4 +33,8 @@ export class MesaService {
   eliminarMesa(idMesa: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${idMesa}`);
   }
+
+  actualizarMesa(idMesa: number, mesa: { numMesa: number, capacidad: number }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${idMesa}`, mesa);
+  }
 }

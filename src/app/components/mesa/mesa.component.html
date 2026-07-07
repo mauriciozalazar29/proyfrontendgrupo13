@@ -81,9 +81,14 @@
             }
 
             @if (esAdmin) {
-            <button class="btn btn-dark btn-sm rounded-3 mt-1 text-danger border-danger hover-scale" (click)="eliminarMesa(mesa.idMesa)" title="Eliminar Mesa">
-              <i class="fas fa-trash-alt me-1"></i> Eliminar Definitivamente
-            </button>
+            <div class="d-flex gap-2 mt-2 w-100">
+              <button class="btn btn-dark btn-sm rounded-3 flex-grow-1 text-warning border-warning hover-scale" (click)="abrirModalEditar(mesa)" title="Editar Mesa">
+                <i class="fas fa-edit"></i> Editar
+              </button>
+              <button class="btn btn-dark btn-sm rounded-3 flex-grow-1 text-danger border-danger hover-scale" (click)="eliminarMesa(mesa.idMesa)" title="Eliminar Mesa">
+                <i class="fas fa-trash-alt"></i> Borrar
+              </button>
+            </div>
             }
           </div>
           
@@ -100,6 +105,32 @@
       </div>
       }
       }
+    </div>
+  </div>
+</div>
+
+<!-- Modal Formulario Editar -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="mostrarModal" style="background-color: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content bg-dark border-warning rounded-4 shadow-lg">
+      <div class="modal-header border-secondary border-opacity-25">
+        <h5 class="modal-title text-warning fw-bold"><i class="fas fa-pen me-2"></i> Editar Mesa</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="cerrarModal()"></button>
+      </div>
+      <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label text-light small fw-semibold text-uppercase">Nº de Mesa</label>
+            <input type="number" class="form-control bg-dark text-white border-secondary" [(ngModel)]="mesaAEditar.numMesa">
+          </div>
+          <div class="mb-4">
+            <label class="form-label text-light small fw-semibold text-uppercase">Capacidad (Personas)</label>
+            <input type="number" class="form-control bg-dark text-white border-secondary" [(ngModel)]="mesaAEditar.capacidad">
+          </div>
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-warning fw-bold hover-scale shadow-sm" (click)="guardarMesaEditada()">Actualizar Mesa</button>
+            <button type="button" class="btn btn-outline-light hover-scale" (click)="cerrarModal()">Cancelar</button>
+          </div>
+      </div>
     </div>
   </div>
 </div>

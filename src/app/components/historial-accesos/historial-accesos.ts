@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { SidebarComponent } from '../sidebar/sidebar.component';
+import { HistorialService } from '../../services/historial.service';
 
 @Component({
   selector: 'app-historial-accesos',
@@ -18,12 +18,10 @@ export class HistorialAccesos implements OnInit {
 
   // Paginación
   currentPage: number = 1;
-  itemsPerPage: number = 15; // Cambiar si se quieren mostrar más/menos filas
+  itemsPerPage: number = 15;
   totalPages: number = 1;
 
-  private apiUrl = 'https://proybackendgrupo13-9bp9.onrender.com/api/historial';
-
-  constructor(private http: HttpClient) { }
+  constructor(private historialService: HistorialService) { }
 
   ngOnInit(): void {
     this.cargarHistorial();
@@ -32,11 +30,7 @@ export class HistorialAccesos implements OnInit {
   cargarHistorial() {
     this.cargando = true;
 
-    // Configurar headers con el token (usualmente lo haria un interceptor, pero por simplicidad lo armamos manual si hace falta)
-    const token = localStorage.getItem('token');
-    const headers = { 'Authorization': `Bearer ${token}` };
-
-    this.http.get<any[]>(this.apiUrl, { headers }).subscribe({
+    this.historialService.obtenerHistorial().subscribe({
       next: (data) => {
         this.historial = data;
         this.totalPages = Math.ceil(this.historial.length / this.itemsPerPage);

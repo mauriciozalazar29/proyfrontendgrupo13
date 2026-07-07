@@ -39,8 +39,18 @@
                     </div>
                   </div>
                 </td>
-                <td><span class="badge bg-secondary">{{p.categoria}}</span></td>
-                <td>{{p.precioCosto | currency}}</td>
+                <td>
+                  <span class="badge fw-bold shadow-sm text-uppercase px-3 py-2"
+                        [ngClass]="{
+                          'bg-warning text-dark': p.categoria === 'plato_principal',
+                          'bg-primary text-white': p.categoria === 'bebida',
+                          'bg-danger text-white': p.categoria === 'postre',
+                          'bg-secondary': p.categoria !== 'plato_principal' && p.categoria !== 'bebida' && p.categoria !== 'postre'
+                        }">
+                    {{ p.categoria ? p.categoria.replace('_', ' ') : 'Desconocido' }}
+                  </span>
+                </td>
+                <td class="fw-medium">{{p.precioCosto | currency}}</td>
                 <td>{{p.porcentajeGanancia}}%</td>
                 <td class="fw-bold text-success">{{p.precio | currency}}</td>
                 <td class="text-end pe-4">

@@ -169,4 +169,39 @@ export class MesaComponent implements OnInit {
       }
     });
   }
+
+  // --- LÓGICA DE EDICIÓN ---
+  mostrarModal: boolean = false;
+  mesaIdAEditar: number | null = null;
+  mesaAEditar = { numMesa: null, capacidad: null };
+
+  abrirModalEditar(mesa: any): void {
+    this.mostrarModal = true;
+    this.mesaIdAEditar = mesa.idMesa;
+    this.mesaAEditar = { numMesa: mesa.numMesa, capacidad: mesa.capacidad };
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+    this.mesaIdAEditar = null;
+    this.mesaAEditar = { numMesa: null, capacidad: null };
+  }
+
+  guardarMesaEditada(): void {
+    if (!this.mesaAEditar.numMesa || !this.mesaAEditar.capacidad) {
+      Swal.fire('Atención', 'Por favor complete todos los campos.', 'warning');
+      return;
+    }
+
+    this.mesaService.actualizarMesa(this.mesaIdAEditar!, this.mesaAEditar as any).subscribe({
+      next: () => {
+        Swal.fire('¡Éxito!', 'Mesa actualizada correctamente.', 'success');
+        this.cerrarModal();
+        this.cargarMesas();
+      },
+      error: (err) => {
+        Swal.fire('Error', err.error?.message || "Error al actualizar la mesa.", 'error');
+      }
+    });
+  }
 }

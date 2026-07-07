@@ -68,7 +68,8 @@ export class UsuarioForm implements OnInit {
   cargarRoles(): void {
     this.rolService.getRoles().subscribe({
       next: (res) => {
-        this.roles = res;
+        // Filtramos para que no aparezca el rol 'CLIENTE' ya que esto es Gestión de Personal (Empleados)
+        this.roles = res.filter((rol: any) => rol.nombre.toUpperCase() !== 'CLIENTE');
         this.cdr.detectChanges();
       },
       error: (err) => {
