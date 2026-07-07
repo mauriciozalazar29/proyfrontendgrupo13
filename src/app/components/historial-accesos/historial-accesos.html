@@ -45,10 +45,12 @@
                         <tbody>
                             <tr *ngFor="let item of paginatedHistorial" class="border-bottom border-secondary border-opacity-25">
                                 <td class="ps-4 fw-medium text-white-50">#{{ item.idHistorial }}</td>
-                                <td class="fw-bold text-white">
-                                    {{ item.Usuario?.nombre }} {{ item.Usuario?.apellido }}
+                                <td class="fw-bold" [ngClass]="{'text-white': item.Usuario, 'text-secondary fst-italic': !item.Usuario}">
+                                    {{ item.Usuario ? (item.Usuario.nombre + ' ' + item.Usuario.apellido) : 'Usuario Anónimo (Invitado)' }}
                                 </td>
-                                <td class="text-light">{{ item.Usuario?.email }}</td>
+                                <td class="text-light" [ngClass]="{'text-white-50': !item.Usuario}">
+                                    {{ item.Usuario ? item.Usuario.email : 'Sin email' }}
+                                </td>
                                 <td>
                                     <span class="badge rounded-pill px-3 py-2 fw-bold text-white shadow-sm" 
                                           [ngClass]="{'bg-danger': item.metodo === 'GOOGLE', 'bg-primary': item.metodo === 'EMAIL', 'bg-success': item.metodo !== 'GOOGLE' && item.metodo !== 'EMAIL'}">
