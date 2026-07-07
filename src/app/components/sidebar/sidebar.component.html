@@ -5,7 +5,8 @@
         <!-- ======================= -->
         <div class="items-container d-flex flex-column align-items-center gap-4 w-100 pb-5">
             
-            <button class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
+            <!-- Solo Gerente y Mozo -->
+            <button *ngIf="authService.tieneRol('Gerente') || authService.tieneRol('Mozo')" class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
                 type="button" [routerLink]="['home']" routerLinkActive="active">
                 <!-- iconos usados de google -->
                 <span class="material-symbols-outlined">home</span>
@@ -47,8 +48,8 @@
                 <span class="text-white">Mesa</span>
             </button>
 
-            <!-- Gerente, Mozo, Cocina -->
-            <button *ngIf="authService.tieneRol('Gerente') || authService.tieneRol('Mozo') || authService.tieneRol('Cocina')" class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
+            <!-- Gerente y Mozo -->
+            <button *ngIf="authService.tieneRol('Gerente') || authService.tieneRol('Mozo')" class="btn btn-link text-decoration-none text-white-50 d-flex flex-column align-items-center w-100 py-2"
                 type="button" [routerLink]="['platos']" routerLinkActive="active">
                 <span class="material-symbols-outlined">lunch_dining</span>
                 <span class="text-white">Platos</span>
