@@ -21,7 +21,7 @@ Diseñar e implementar un sistema web completo aplicando los conocimientos de **
 graph TD
     A[Cliente / Navegador] -->|HTTP GET/POST/PUT/DELETE| B(Backend Express REST API)
     A -->|Login OAuth| C(Google Identity Services)
-    A -->|Clima en vivo| E(Open-Meteo API)
+    A -->|Clima en vivo| E(Yahoo Weather API - RapidAPI)
     A -->|Redirección de Pagos| D(MercadoPago Checkout)
     
     B -->|Generación de Preferencias| D
@@ -71,7 +71,7 @@ El sistema adapta su interfaz dependiendo del rol del usuario autenticado:
 
 1. **Google Identity Services:** Implementado en el flujo de pagos. El cliente hace clic en "Pagar", se abre el pop-up de Google, y el frontend captura el ID Token para enviarlo a nuestro backend.
 2. **MercadoPago Checkout Pro:** Al confirmar el carrito, el frontend recibe un `init_point` del backend y redirige al usuario a la pasarela segura.
-3. **Open-Meteo API (Clima):** La página principal (Home) consume esta API geolocalizada en San Salvador de Jujuy. Si detecta lluvia, muestra una alerta dinámica informando posibles demoras en los envíos de Delivery.
+3. **Yahoo Weather API (RapidAPI):** La página principal (Home) consume esta API geolocalizada en San Salvador de Jujuy, implementando un sofisticado sistema de caché en el `localStorage` para optimizar peticiones de red. Dependiendo de la temperatura y el estado del tiempo, la UI reacciona y recomienda platos calientes o bebidas frías de forma dinámica.
 4. **Chatbot API:** Módulo visual en el frontend que permite al cliente despejar dudas de manera autónoma, utilizando el `Angular CDK Drag` para posicionarlo libremente en pantalla.
 
 ---
