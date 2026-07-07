@@ -51,8 +51,8 @@
                                 <td class="text-light">{{ item.Usuario?.email }}</td>
                                 <td>
                                     <span class="badge rounded-pill px-3 py-2 fw-bold text-white shadow-sm" 
-                                          [ngClass]="{'bg-danger': item.metodo === 'GOOGLE', 'bg-primary': item.metodo === 'EMAIL'}">
-                                        <i class="fa-brands me-1" [ngClass]="{'fa-google': item.metodo === 'GOOGLE', 'fa-envelope': item.metodo === 'EMAIL'}"></i>
+                                          [ngClass]="{'bg-danger': item.metodo === 'GOOGLE', 'bg-primary': item.metodo === 'EMAIL', 'bg-success': item.metodo !== 'GOOGLE' && item.metodo !== 'EMAIL'}">
+                                        <i class="fa-solid me-1" [ngClass]="{'fa-google fa-brands': item.metodo === 'GOOGLE', 'fa-envelope': item.metodo === 'EMAIL', 'fa-shield-halved': item.metodo !== 'GOOGLE' && item.metodo !== 'EMAIL'}"></i>
                                         {{ item.metodo }}
                                     </span>
                                 </td>
