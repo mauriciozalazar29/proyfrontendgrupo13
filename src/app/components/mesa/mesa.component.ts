@@ -68,6 +68,11 @@ export class MesaComponent implements OnInit {
       return;
     }
 
+    if (this.nuevaMesa.numMesa <= 0 || this.nuevaMesa.capacidad <= 0) {
+      Swal.fire('Atención', 'El número de mesa y la capacidad deben ser mayores a 0.', 'warning');
+      return;
+    }
+
     this.mesaService.crearMesa(this.nuevaMesa as any).subscribe({
       next: () => {
         Swal.fire('¡Éxito!', 'Mesa creada correctamente.', 'success');
@@ -190,6 +195,11 @@ export class MesaComponent implements OnInit {
   guardarMesaEditada(): void {
     if (!this.mesaAEditar.numMesa || !this.mesaAEditar.capacidad) {
       Swal.fire('Atención', 'Por favor complete todos los campos.', 'warning');
+      return;
+    }
+
+    if (this.mesaAEditar.numMesa <= 0 || this.mesaAEditar.capacidad <= 0) {
+      Swal.fire('Atención', 'El número de mesa y la capacidad deben ser mayores a 0.', 'warning');
       return;
     }
 
